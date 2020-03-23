@@ -22,16 +22,18 @@ Route::get("/experiment", function () {
         return !Str::startsWith($filename, ".~lock.");
     });
 
-
     if (count($filenames) === 0) {
         return "No file found.";
     }
 
-
     // Import seluruh nama ruangan
-    Excel::import(new KegiatanImport(), $filenames[0], "seed");
+    Excel::import(
+        new KegiatanImport(),
+        $filenames[array_key_first($filenames)],
+        "seed"
+    );
 
-    return "XXX";
+    return "Attempting to load some data here.";
 });
 
 
