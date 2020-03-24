@@ -38,7 +38,7 @@ class LongRowExtractor implements DataRowExtractor
 
     public function getTime(): array
     {
-        return explode("s/d", strtolower(trim($this->row[self::TIME_COL_INDEX]))) ;
+        return explode("s/d ", strtolower(trim($this->row[self::TIME_COL_INDEX]))) ;
     }
 
     public function getClassCode(): string

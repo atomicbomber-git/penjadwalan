@@ -4,6 +4,7 @@
 namespace App\ExcelImports\DataRowExtractors;
 
 
+use App\Constants\IndonesianDays;
 use App\ExcelImports\Contracts\DataRowExtractor;
 use Illuminate\Support\Collection;
 
@@ -27,14 +28,38 @@ class ShortRowExtractor implements DataRowExtractor
         $this->row = $row;
     }
 
-    public function getDay(): string
+    public function getDay(): ?string
     {
-        return isset($this->row[self::DAY_COL_INDEX]) ? trim($this->row[self::DAY_COL_INDEX]) : null;
+        return !is_null($this->row[self::DAY_COL_INDEX]) ?
+            IndonesianDays::getIndex(strtolower(trim($this->row[self::DAY_COL_INDEX]))):
+            null;
     }
 
     public function getTime(): array
     {
-        return explode("s/d", strtolower(trim($this->row[self::TIME_COL_INDEX]))) ;
+        $raw_data = trim($this->row[self::TIME_COL_INDEX]);
+        $raw_data = strtolower($raw_data);
+        $raw_data = rtrim($raw_data," (-)");
+        $raw_data = str_replace(".", ":", $raw_data);
+
+
+        foreach (array_keys(IndonesianDays::MAP) as $day_name) {
+            $raw_data = ltrim($raw_data, " {$day_name}");
+        }
+
+
+        $delimiter = null;
+        foreach ([" - ", " s/d "] as $delimiter_candidate) {
+            if (strpos($raw_data, $delimiter_candidate) !== false) {
+                $delimiter = $delimiter_candidate;
+            }
+        }
+        if ($delimiter === null) {
+            throw new \Exception("Delimiter not found.");
+        }
+
+
+        return explode($delimiter, $raw_data) ;
     }
 
     public function getClassCode(): string

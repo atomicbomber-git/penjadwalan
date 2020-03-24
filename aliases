@@ -17,6 +17,18 @@ function artisan() {
     php artisan "$@"
 }
 
+function mf() {
+    php artisan migrate:fresh "$@"
+}
+
+function mfs() {
+    php artisan migrate:fresh --seed "$@"
+}
+
+function seed() {
+    php artisan db:seed --class="$@"
+}
+
 function dusk() {
     pids=$(pidof /usr/bin/Xvfb)
 

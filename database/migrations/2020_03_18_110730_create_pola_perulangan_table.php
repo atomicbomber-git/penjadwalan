@@ -26,11 +26,14 @@ class CreatePolaPerulanganTable extends Migration
                     maka kegiatan akan berulang 2 hari setelah kegiatan serupa dilakukan.
                 "
             );
-            $table->integer("hari_dalam_minggu");
-            $table->integer("minggu_dalam_bulan");
-            $table->integer("hari_dalam_bulan");
-            $table->integer("bulan_dalam_tahun");
+            $table->integer("hari_dalam_minggu")->nullable();
+            $table->integer("minggu_dalam_bulan")->nullable();
+            $table->integer("hari_dalam_bulan")->nullable();
+            $table->integer("bulan_dalam_tahun")->nullable();
             $table->timestamps();
+
+            $table->unsignedInteger('kegiatan_id')->index();
+            $table->foreign('kegiatan_id')->references('id')->on('kegiatan')->cascadeOnDelete();
         });
     }
 
