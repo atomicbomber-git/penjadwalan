@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Support\ExtendedPostgresGrammar;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        DB::connection()->setSchemaGrammar(
+            new ExtendedPostgresGrammar()
+        );
     }
 }

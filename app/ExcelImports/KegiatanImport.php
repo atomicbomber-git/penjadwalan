@@ -4,12 +4,13 @@
 namespace App\ExcelImports;
 
 
-use App\Constants\TipePerulangan;
+use App\Constants\Interval;
 use App\ExcelImports\Contracts\DataRowExtractor;
 use App\ExcelImports\DataRowExtractors\LongRowExtractor;
 use App\ExcelImports\DataRowExtractors\ShortRowExtractor;
 use App\Kegiatan;
 use App\KelasMataKuliah;
+use App\MataKuliah;
 use App\PolaPerulangan;
 use App\Ruangan;
 use Exception;
@@ -125,7 +126,18 @@ class KegiatanImport implements ToCollection
             "deskripsi" => $primaryRowDataExtractor->getRoom(),
         ]);
 
-        $kelas_mata_kuliah = KelasMataKuliah::query()->create();
+        $mata_kuliah = MataKuliah::query()->firstOrCreate([
+            "kode" => $primaryRowDataExtractor->getClassCode(),
+        ], [
+            "nama" => $primaryRowDataExtractor->getClassName(),
+            "semester" => $primaryRowDataExtractor->getSemester(),
+            "jumlah_sks" => $primaryRowDataExtractor->getSKS(),
+        ]);
+
+        $kelas_mata_kuliah = KelasMataKuliah::query()->create([
+            "mata_kuliah_id" => $mata_kuliah->id,
+            "tipe" => $primaryRowDataExtractor->getType(),
+        ]);
 
         list($start_time, $end_time) = $primaryRowDataExtractor->getTime();
 
@@ -142,8 +154,7 @@ class KegiatanImport implements ToCollection
 
         PolaPerulangan::query()->create([
             "kegiatan_id" => $kegiatan->id,
-            "tipe_perulangan" => TipePerulangan::MINGGUAN,
-            "jumlah_unit_pemisah" => 0,
+            "interval" => "1 " . Interval::WEEK,
             "hari_dalam_minggu" => $primaryRowDataExtractor->getDay(),
             "minggu_dalam_bulan" => null,
             "hari_dalam_bulan" => null,

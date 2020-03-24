@@ -15,17 +15,7 @@ class CreatePolaPerulanganTable extends Migration
     {
         Schema::create('pola_perulangan', function (Blueprint $table) {
             $table->increments("id");
-
-            $table->string("tipe_perulangan")->comment(
-                "Dapat bernilai HARIAN, MINGGUAN, BULANAN, atau TAHUNAN"
-            );
-            $table->integer("jumlah_unit_pemisah")->comment(
-                "
-                    Berapa lama rentang waktu perulangan setelah kegiatan dilakukan.
-                    Jika tipe perulangan adalah HARIAN dan jumlah unit pemisah adalah 2,
-                    maka kegiatan akan berulang 2 hari setelah kegiatan serupa dilakukan.
-                "
-            );
+            $table->addColumn('interval', 'interval');
             $table->integer("hari_dalam_minggu")->nullable();
             $table->integer("minggu_dalam_bulan")->nullable();
             $table->integer("hari_dalam_bulan")->nullable();
