@@ -12,7 +12,10 @@ use App\Kegiatan;
 use App\KelasMataKuliah;
 use App\MataKuliah;
 use App\PolaPerulangan;
+use App\ProgramStudi;
 use App\Ruangan;
+use App\TahunAjaran;
+use App\TipeSemester;
 use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -35,6 +38,10 @@ class KegiatanImport implements ToCollection
         ],
     ];
 
+    private ProgramStudi $program_studi;
+    private TahunAjaran $tahun_ajaran;
+    private TipeSemester $tipe_semester;
+
     private $start_date = null;
     private $end_date = null;
 
@@ -46,7 +53,7 @@ class KegiatanImport implements ToCollection
         10 => self::ROW_TYPE_SHORT,
     ];
 
-    private $savedRow  = null;
+    private $savedRow = null;
     private $currentDay = null;
 
     public static function getNotNullCount(array $row): int
@@ -110,8 +117,7 @@ class KegiatanImport implements ToCollection
         if ((static::getNotNullCount($row->toArray()) < 10) && ($currentRowDataExtractor->getClassCode() !== null)) {
             /** Continuation row, use similar data as the 'current row' except for the class code */
             $primaryRow = $row->replace($this->savedRow);
-        }
-        else {
+        } else {
             $primaryRow = $row;
             $this->savedRow = $row;
         }
@@ -126,10 +132,19 @@ class KegiatanImport implements ToCollection
             "deskripsi" => $primaryRowDataExtractor->getRoom(),
         ]);
 
+        $mata_kuliah_umum = false;
+        foreach (["MKWU", "UMG", "UT"] as $marker) {
+            if (strpos($primaryRowDataExtractor->getClassCode(), $marker) !== false) {
+                $mata_kuliah_umum = true;
+                break;
+            }
+        }
+
         $mata_kuliah = MataKuliah::query()->firstOrCreate([
             "kode" => $primaryRowDataExtractor->getClassCode(),
         ], [
-            "nama" => $primaryRowDataExtractor->getClassName(),
+            "program_studi_id" => $mata_kuliah_umum ? null : $this->program_studi->id,
+            "nama" =>  $primaryRowDataExtractor->getClassName(),
             "semester" => $primaryRowDataExtractor->getSemester(),
             "jumlah_sks" => $primaryRowDataExtractor->getSKS(),
         ]);
@@ -137,6 +152,9 @@ class KegiatanImport implements ToCollection
         $kelas_mata_kuliah = KelasMataKuliah::query()->create([
             "mata_kuliah_id" => $mata_kuliah->id,
             "tipe" => $primaryRowDataExtractor->getType(),
+            "tipe_semester_id" => $this->tipe_semester->id,
+            "tahun_ajaran_id" => $this->tahun_ajaran->id,
+            "program_studi_id" => $this->program_studi->id,
         ]);
 
         list($start_time, $end_time) = $primaryRowDataExtractor->getTime();
@@ -179,31 +197,10 @@ class KegiatanImport implements ToCollection
         }
 
         if ($semester_type === "GENAP") {
-            return  ["01-01-2019", "06-30-2019"];
+            return ["01-01-2019", "06-30-2019"];
         }
 
         throw new Exception("Unknown data.");
-    }
-
-    public function extractStartAndEndDates(string $info_text)
-    {
-        $split_parts = explode(" ", $info_text);
-        $semester = null;
-        $tahun_ajaran = null;
-
-        foreach ($split_parts as $index => $split_part) {
-            if ($split_part === "SEMESTER") {
-                $semester = $split_parts[$index + 1];
-                continue;
-            }
-
-            if ($split_part === "AKADEMIK" || $split_part === "TA.") {
-                $tahun_ajaran = $split_parts[$index + 1];
-                continue;
-            }
-        }
-
-        list($this->start_date, $this->end_date) = $this->getStartAndEndDate($tahun_ajaran, $semester);
     }
 
     /**
@@ -214,7 +211,8 @@ class KegiatanImport implements ToCollection
     {
         $current_mode = self::MODE_SEEKING_TABLE_HEADER;
 
-        $this->extractStartAndEndDates($rows->first()->first());
+        $this->extractTahunAjaran($rows->shift()->first());
+        $this->extractProgramStudi($rows->shift()->first());
 
         foreach ($rows as $index => $row) {
             switch ($current_mode) {
@@ -232,6 +230,56 @@ class KegiatanImport implements ToCollection
                     break;
                 case self::MODE_SKIP_THE_REST:
                     break;
+            }
+        }
+    }
+
+    /**
+     * @param $first_row_text
+     * @throws Exception
+     */
+    private function extractTahunAjaran($first_row_text): void
+    {
+        $split_text_parts = explode(" ", $first_row_text);
+        $year_text_parts = null;
+
+        foreach ($split_text_parts as $index => $split_text_part) {
+            if (in_array(trim($split_text_part), ["SEMESTER"])) {
+                $tipe_semester = trim($split_text_parts[$index + 1]);
+                continue;
+            }
+
+            if (in_array(trim($split_text_part), ["TA.", "AKADEMIK"])) {
+                $year_text_parts = array_splice($split_text_parts, $index + 1);
+                continue;
+            }
+        }
+
+        $this->tipe_semester = TipeSemester::query()->firstOrCreate([
+            "nama" => $tipe_semester
+        ]);
+
+        list($tahun_mulai, $tahun_selesai) = explode("/", implode("", $year_text_parts));
+
+        $this->tahun_ajaran = TahunAjaran::query()->firstOrCreate([
+            "tahun_mulai" => $tahun_mulai,
+            "tahun_selesai" => $tahun_selesai,
+        ]);
+
+        list($this->start_date, $this->end_date) = $this->getStartAndEndDate("{$tahun_mulai}/{$tahun_selesai}", $tipe_semester);
+    }
+
+    /**
+     * @param $second_row_text
+     */
+    private function extractProgramStudi($second_row_text): void
+    {
+        foreach (["PROGRAM STUDI SARJANA S1", "PROGRAM STUDI"] AS $marker) {
+            if (($pos = strpos($second_row_text, $marker)) !== false) {
+                $this->program_studi = ProgramStudi::query()->firstOrCreate([
+                    "nama" => trim(substr($second_row_text, $pos + strlen($marker)))
+                ]);
+                break;
             }
         }
     }
