@@ -38,7 +38,26 @@ class LongRowExtractor implements DataRowExtractor
 
     public function getTime(): array
     {
-        return explode("s/d ", strtolower(trim($this->row[self::TIME_COL_INDEX]))) ;
+        $raw_data = trim($this->row[self::TIME_COL_INDEX]);
+        $raw_data = strtolower($raw_data);
+        $raw_data = rtrim($raw_data," (-)");
+        $raw_data = str_replace(".", ":", $raw_data);
+
+        foreach (array_keys(IndonesianDays::MAP) as $day_name) {
+            $raw_data = ltrim($raw_data, " {$day_name}");
+        }
+
+        $delimiter = null;
+        foreach ([" - ", " s/d "] as $delimiter_candidate) {
+            if (strpos($raw_data, $delimiter_candidate) !== false) {
+                $delimiter = $delimiter_candidate;
+            }
+        }
+        if ($delimiter === null) {
+            throw new \Exception("Delimiter not found.");
+        }
+
+        return explode($delimiter, $raw_data) ;
     }
 
     public function getClassCode(): string

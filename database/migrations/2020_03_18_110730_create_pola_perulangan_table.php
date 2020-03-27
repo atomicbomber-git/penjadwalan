@@ -15,11 +15,11 @@ class CreatePolaPerulanganTable extends Migration
     {
         Schema::create('pola_perulangan', function (Blueprint $table) {
             $table->increments("id");
-            $table->addColumn('interval', 'interval');
-            $table->integer("hari_dalam_minggu")->nullable();
-            $table->integer("minggu_dalam_bulan")->nullable();
-            $table->integer("hari_dalam_bulan")->nullable();
-            $table->integer("bulan_dalam_tahun")->nullable();
+            $table->integer('interval_perulangan');
+            $table->integer('hari_dalam_minggu')->nullable();
+            $table->integer('minggu_dalam_bulan')->nullable();
+            $table->integer('hari_dalam_bulan')->nullable();
+            $table->integer('bulan_dalam_tahun')->nullable();
             $table->timestamps();
 
             $table->unsignedInteger('kegiatan_id')->index();

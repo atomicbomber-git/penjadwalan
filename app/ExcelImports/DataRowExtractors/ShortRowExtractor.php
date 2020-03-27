@@ -42,11 +42,9 @@ class ShortRowExtractor implements DataRowExtractor
         $raw_data = rtrim($raw_data," (-)");
         $raw_data = str_replace(".", ":", $raw_data);
 
-
         foreach (array_keys(IndonesianDays::MAP) as $day_name) {
             $raw_data = ltrim($raw_data, " {$day_name}");
         }
-
 
         $delimiter = null;
         foreach ([" - ", " s/d "] as $delimiter_candidate) {
@@ -57,7 +55,6 @@ class ShortRowExtractor implements DataRowExtractor
         if ($delimiter === null) {
             throw new \Exception("Delimiter not found.");
         }
-
 
         return explode($delimiter, $raw_data) ;
     }

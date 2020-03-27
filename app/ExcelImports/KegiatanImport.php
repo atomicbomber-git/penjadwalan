@@ -88,6 +88,20 @@ class KegiatanImport implements ToCollection
         return self::ROW_TYPE_LENGTH_MAP[$row->count()];
     }
 
+    public function cleanName(string $name): string
+    {
+        $result = $name;
+
+        // Remove unwanted characters
+        foreach ([".", "-", " "] as $to_be_deleted) {
+            $result = str_replace($to_be_deleted, "", $result);
+        }
+
+        $result = strtoupper($result);
+
+        return $result;
+    }
+
     /**
      * @param Collection $row
      * @return DataRowExtractor
@@ -114,7 +128,7 @@ class KegiatanImport implements ToCollection
         $primaryRow = null;
         $currentRowDataExtractor = $this->getDataRowExtractor($row);
 
-        if ((static::getNotNullCount($row->toArray()) < 10) && ($currentRowDataExtractor->getClassCode() !== null)) {
+        if ((static::getNotNullCount($row->toArray()) < 8) && ($currentRowDataExtractor->getClassCode() !== null)) {
             /** Continuation row, use similar data as the 'current row' except for the class code */
             $primaryRow = $row->replace($this->savedRow);
         } else {
@@ -123,13 +137,15 @@ class KegiatanImport implements ToCollection
         }
 
         $primaryRowDataExtractor = $this->getDataRowExtractor($primaryRow);
+
         if ($primaryRowDataExtractor->getDay() !== null) {
             $this->currentDay = $primaryRowDataExtractor->getDay();
         }
 
         $ruangan = Ruangan::query()->firstOrCreate([
-            "nama" => $primaryRowDataExtractor->getRoom(),
-            "deskripsi" => $primaryRowDataExtractor->getRoom(),
+            "nama" => $this->cleanName($primaryRowDataExtractor->getRoom()),
+        ], [
+            "deskripsi" => $this->cleanName($primaryRowDataExtractor->getRoom())
         ]);
 
         $mata_kuliah_umum = false;
@@ -172,8 +188,8 @@ class KegiatanImport implements ToCollection
 
         PolaPerulangan::query()->create([
             "kegiatan_id" => $kegiatan->id,
-            "interval" => "1 " . Interval::WEEK,
-            "hari_dalam_minggu" => $primaryRowDataExtractor->getDay(),
+            "interval_perulangan" => 1,
+            "hari_dalam_minggu" => $this->currentDay,
             "minggu_dalam_bulan" => null,
             "hari_dalam_bulan" => null,
             "bulan_dalam_tahun" => null,
@@ -222,7 +238,7 @@ class KegiatanImport implements ToCollection
                     }
                     break;
                 case self::MODE_READING_TABLE_BODY:
-                    if ($this->getNullCount($row) === $row->count()) {
+                    if (((static::getNotNullCount($row->toArray())) < 4) || empty($row[1])) {
                         $current_mode = self::MODE_SKIP_THE_REST;
                         break;
                     }
