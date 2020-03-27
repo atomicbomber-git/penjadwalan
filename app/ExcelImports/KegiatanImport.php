@@ -204,16 +204,12 @@ class KegiatanImport implements ToCollection
      */
     public function getStartAndEndDate(string $term, string $semester_type): array
     {
-        if (isset(self::DATE_MAP[$term][$semester_type])) {
-            return self::DATE_MAP[$term][$semester_type];
-        }
-
         if ($semester_type === "GASAL") {
-            return ["07-01-2018", "12-31-2019"];
+            return ["07-01-{$this->tahun_ajaran->tahun_mulai}", "12-31-{$this->tahun_ajaran->tahun_mulai}"];
         }
 
         if ($semester_type === "GENAP") {
-            return ["01-01-2019", "06-30-2019"];
+            return ["01-01-{$this->tahun_ajaran->tahun_selesai}", "06-30-{$this->tahun_ajaran->tahun_selesai}"];
         }
 
         throw new Exception("Unknown data.");
