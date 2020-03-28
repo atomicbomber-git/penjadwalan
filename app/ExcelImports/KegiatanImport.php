@@ -4,7 +4,6 @@
 namespace App\ExcelImports;
 
 
-use App\Constants\Interval;
 use App\ExcelImports\Contracts\DataRowExtractor;
 use App\ExcelImports\DataRowExtractors\LongRowExtractor;
 use App\ExcelImports\DataRowExtractors\ShortRowExtractor;
@@ -36,6 +35,10 @@ class KegiatanImport implements ToCollection
             "GASAL" => ["07-01-2019", "12-31-2020"],
             "GENAP" => ["01-01-2020", "06-30-2020"],
         ],
+    ];
+
+    private $ignoredProgramStudis = [
+        "ARSITEKTUR"
     ];
 
     private ProgramStudi $program_studi;
@@ -160,7 +163,7 @@ class KegiatanImport implements ToCollection
             "kode" => $primaryRowDataExtractor->getClassCode(),
         ], [
             "program_studi_id" => $mata_kuliah_umum ? null : $this->program_studi->id,
-            "nama" =>  $primaryRowDataExtractor->getClassName(),
+            "nama" => $primaryRowDataExtractor->getClassName(),
             "semester" => $primaryRowDataExtractor->getSemester(),
             "jumlah_sks" => $primaryRowDataExtractor->getSKS(),
         ]);
@@ -225,6 +228,10 @@ class KegiatanImport implements ToCollection
 
         $this->extractTahunAjaran($rows->shift()->first());
         $this->extractProgramStudi($rows->shift()->first());
+
+        if (in_array($this->program_studi->nama, $this->ignoredProgramStudis)) {
+            return;
+        }
 
         foreach ($rows as $index => $row) {
             switch ($current_mode) {

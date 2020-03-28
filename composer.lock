@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91a8a9aea9bf3d19f466177444ff85f0",
+    "content-hash": "03bdd58964b0d38cd746c8bde08ad872",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2286,6 +2286,54 @@
                 "uuid"
             ],
             "time": "2020-02-21T04:36:14+00:00"
+        },
+        {
+            "name": "spatie/period",
+            "version": "1.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/period.git",
+                "reference": "7ed3ae70b16ddcaf1aee0e58d983747c4e5380fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/period/zipball/7ed3ae70b16ddcaf1aee0e58d983747c4e5380fa",
+                "reference": "7ed3ae70b16ddcaf1aee0e58d983747c4e5380fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.0",
+                "nesbot/carbon": "^2.6",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Period\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Roose",
+                    "email": "brent@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Complex period comparisons",
+            "homepage": "https://github.com/spatie/period",
+            "keywords": [
+                "period",
+                "spatie"
+            ],
+            "time": "2020-02-05T13:51:38+00:00"
         },
         {
             "name": "staudenmeir/laravel-cte",
@@ -5979,5 +6027,6 @@
     "platform": {
         "php": "^7.4"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
