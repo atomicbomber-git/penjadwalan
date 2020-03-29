@@ -29,7 +29,7 @@ class ExcelDataSeeder extends Seeder
         foreach ($filenames as $filename) {
             $this->command->info("Importing data from {$filename}...");
 
-            DB::beginTransaction();
+//            DB::beginTransaction();
 
             Excel::import(
                 (new class implements WithMultipleSheets {
@@ -42,7 +42,7 @@ class ExcelDataSeeder extends Seeder
                 "seed"
             );
 
-            DB::commit();
+//            DB::commit();
         }
     }
 }

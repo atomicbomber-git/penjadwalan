@@ -8,8 +8,10 @@ use App\ExcelImports\Contracts\DataRowExtractor;
 use App\ExcelImports\DataRowExtractors\LongRowExtractor;
 use App\ExcelImports\DataRowExtractors\ShortRowExtractor;
 use App\Kegiatan;
+use App\KegiatanKelasMataKuliah;
 use App\KelasMataKuliah;
 use App\MataKuliah;
+use App\MataKuliahProgramStudi;
 use App\PolaPerulangan;
 use App\ProgramStudi;
 use App\Ruangan;
@@ -17,6 +19,7 @@ use App\TahunAjaran;
 use App\TipeSemester;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class KegiatanImport implements ToCollection
@@ -163,12 +166,48 @@ class KegiatanImport implements ToCollection
             "kode" => $primaryRowDataExtractor->getClassCode(),
         ], [
             "program_studi_id" => $mata_kuliah_umum ? null : $this->program_studi->id,
-            "nama" => $primaryRowDataExtractor->getClassName(),
+            "nama" => strtoupper(trim($primaryRowDataExtractor->getClassName())),
             "semester" => $primaryRowDataExtractor->getSemester(),
             "jumlah_sks" => $primaryRowDataExtractor->getSKS(),
         ]);
 
-        $kelas_mata_kuliah = KelasMataKuliah::query()->create([
+        list($start_time, $end_time) = $primaryRowDataExtractor->getTime();
+
+        $kegiatan_id = DB::table("kegiatan")
+            ->select('kegiatan.id')
+            ->leftJoin("pola_perulangan", "pola_perulangan.kegiatan_id", "=", "kegiatan.id")
+            ->leftJoin("kelas_mata_kuliah", "kelas_mata_kuliah.kegiatan_id", "=", "kegiatan.id")
+            ->leftJoin("program_studi", "program_studi.id", "=", "kelas_mata_kuliah.program_studi_id")
+            ->leftJoin("mata_kuliah", "mata_kuliah.id", "=", "kelas_mata_kuliah.mata_kuliah_id")
+            ->leftJoin("tahun_ajaran", "tahun_ajaran.id", "=", "kelas_mata_kuliah.tahun_ajaran_id")
+            ->leftJoin("tipe_semester", "tipe_semester.id", "=", "kelas_mata_kuliah.tipe_semester_id")
+            ->leftJoin("ruangan", "ruangan.id", "=", "kegiatan.ruangan_id")
+            ->where("tipe_semester.id", $this->tipe_semester->id)
+            ->where("tahun_ajaran.id", $this->tahun_ajaran->id)
+            ->where("mata_kuliah.kode", $mata_kuliah->kode)
+            ->where("ruangan.id", $ruangan->id)
+            ->where("kegiatan.waktu_mulai", $start_time)
+            ->where("kegiatan.waktu_selesai", $end_time)
+            ->where("interval_perulangan", 1)
+            ->where("hari_dalam_minggu",  $this->currentDay)
+            ->where("minggu_dalam_bulan", null)
+            ->where("hari_dalam_bulan", null)
+            ->where("bulan_dalam_tahun", null)
+            ->value("id");
+
+        if ($kegiatan_id === null) {
+            $kegiatan_id = Kegiatan::query()->create([
+                "ruangan_id" => $ruangan->id,
+                "tanggal_mulai" => $this->start_date,
+                "tanggal_selesai" => $this->end_date,
+                "waktu_mulai" => $start_time,
+                "waktu_selesai" => $end_time,
+                "berulang" => true,
+            ])->id;
+        }
+
+        KelasMataKuliah::query()->create([
+            "kegiatan_id" => $kegiatan_id,
             "mata_kuliah_id" => $mata_kuliah->id,
             "tipe" => $primaryRowDataExtractor->getType(),
             "tipe_semester_id" => $this->tipe_semester->id,
@@ -176,21 +215,9 @@ class KegiatanImport implements ToCollection
             "program_studi_id" => $this->program_studi->id,
         ]);
 
-        list($start_time, $end_time) = $primaryRowDataExtractor->getTime();
-
-        $kegiatan = Kegiatan::query()->firstOrCreate([
-            "kelas_mata_kuliah_id" => $kelas_mata_kuliah->id,
-            "ruangan_id" => $ruangan->id,
+        PolaPerulangan::query()->firstOrCreate([
+            "kegiatan_id" => $kegiatan_id
         ], [
-            "tanggal_mulai" => $this->start_date,
-            "tanggal_selesai" => $this->end_date,
-            "waktu_mulai" => $start_time,
-            "waktu_selesai" => $end_time,
-            "berulang" => true,
-        ]);
-
-        PolaPerulangan::query()->create([
-            "kegiatan_id" => $kegiatan->id,
             "interval_perulangan" => 1,
             "hari_dalam_minggu" => $this->currentDay,
             "minggu_dalam_bulan" => null,
