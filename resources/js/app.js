@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import moment from "moment";
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -13,19 +15,30 @@ window.Vue = require('vue');
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Eg. ./components/PenggunaanRuanganFilter.vue -> <example-component></example-component>
  */
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+import { Settings } from 'luxon'
+Settings.defaultLocale = 'id';
+
+Vue.component('penggunaan-ruangan-filter', require('./components/PenggunaanRuanganFilter.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Vue.mixin({
+    methods: {
+        normalizeDatetime: function (date) {
+            return moment(date).format("YYYY-MM-DD HH:mm:ss")
+        }
+    }
+});
 
 const app = new Vue({
     el: '#app',

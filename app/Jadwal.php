@@ -9,10 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Jadwal extends Model
 {
     protected $table = 'jadwal';
-
-    protected $casts = [
-        'rentang_waktu' => TimestampRange::class
-    ];
+    protected $perPage = '5';
 
     public function kegiatan(): BelongsTo
     {

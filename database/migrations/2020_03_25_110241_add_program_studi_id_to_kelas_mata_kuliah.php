@@ -17,7 +17,7 @@ class AddProgramStudiIdToKelasMataKuliah extends Migration
             $table->unsignedInteger('program_studi_id')->index();
             $table->foreign('program_studi_id')->references('id')->on('program_studi');
 
-//            $table->unique(['kegiatan_id', 'tipe']);
+//            $table->unique(['kegiatan_id', 'program_studi_id']);
         });
     }
 

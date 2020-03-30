@@ -14,7 +14,6 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**

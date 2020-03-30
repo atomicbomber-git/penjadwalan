@@ -1,8 +1,11 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Vue Multiselect
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
+
+// Vue Datetime Picker
+@import '~vue-datetime/dist/vue-datetime.min.css';
