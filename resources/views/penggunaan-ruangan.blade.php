@@ -14,7 +14,6 @@
         ></penggunaan-ruangan-filter>
     </div>
 
-
     <div class="alert alert-info my-3">
         Menampilkan penggunaan ruangan <strong> {{ $ruangan->nama }} </strong> dari
         <strong>
@@ -28,7 +27,14 @@
             <div class="card-body">
                 <div class="card-title d-block h5">
                     <span class="h4 d-block font-weight-bold">
-                        {{ $jadwal->mata_kuliah->nama }}
+                        @switch(true)
+                            @case($jadwal->mata_kuliah)
+                                    {{ $jadwal->mata_kuliah->nama }}
+                            @break
+                            @case($jadwal->seminar)
+                                {{ $jadwal->seminar->nama }}
+                            @break
+                        @endswitch
                     </span>
 
                     <span class="d-block text-primary">
@@ -37,17 +43,19 @@
                     </span>
                 </div>
 
-                <dl>
-                    <dt> Program Studi / Kelas </dt>
-                    <dd>
-                    @foreach($jadwal->detail_penggunaans AS $detail_penggunaan)
-                        <span class="d-block">
-                            {{ $detail_penggunaan->program_studi->nama }} /
-                            {{ $detail_penggunaan->tipe }}
+                @if($jadwal->mata_kuliah)
+                    <dl>
+                        <dt> Program Studi / Kelas </dt>
+                        <dd>
+                            @foreach($jadwal->kegiatan_kelas ?? [] AS $kegiatan_kelas)
+                                <span class="d-block">
+                            {{ $kegiatan_kelas->program_studi->nama }} /
+                            {{ $kegiatan_kelas->tipe }}
                         </span>
-                    @endforeach
-                    </dd>
-                </dl>
+                            @endforeach
+                        </dd>
+                    </dl>
+                @endif
             </div>
         </div>
     @endforeach

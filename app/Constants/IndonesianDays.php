@@ -10,6 +10,11 @@ class IndonesianDays
         return self::MAP[$name];
     }
 
+    public static function getName(int $index): string
+    {
+        return array_flip(self::MAP)[$index];
+    }
+
     const MAP = [
         "senin" => 1,
         "selasa" => 2,

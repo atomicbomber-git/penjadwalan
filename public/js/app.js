@@ -64393,11 +64393,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [
-          _vm._v(
-            "\n                    Periksa Ketersediaan Ruangan\n                "
-          )
-        ]
+        [_vm._v("\n                    Ubah Filter\n                ")]
       )
     ])
   }

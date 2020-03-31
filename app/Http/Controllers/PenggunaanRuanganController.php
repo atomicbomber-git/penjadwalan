@@ -35,7 +35,6 @@ class PenggunaanRuanganController extends Controller
 
         $filter_waktu_mulai = $request->get("filter_waktu_mulai", Date::today()->format("Y-m-d H:i:s"));
         $filter_waktu_selesai = $request->get("filter_waktu_selesai", Date::today()->addMonths(1)->format("Y-m-d H:i:s"));
-
         $jadwals = $this->getJadwal($filter_ruangan_id, $filter_waktu_mulai, $filter_waktu_selesai);
 
         return view("penggunaan-ruangan", compact(
@@ -51,7 +50,7 @@ class PenggunaanRuanganController extends Controller
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function getDetailKegiatanQuery(): \Illuminate\Database\Eloquent\Builder
+    private function getKegiatanKelasQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return KelasKegiatan::query()
             ->select("kegiatan_id")
@@ -62,14 +61,13 @@ class PenggunaanRuanganController extends Controller
                         'program_studi', json_build_object('id', program_studi.id, 'nama', program_studi.nama)
                         )
                     ORDER BY program_studi.nama, tipe
-                    ) AS detail_penggunaans
+                    ) AS kegiatan_kelas
             ")
             ->leftJoin("program_studi", "program_studi.id", "kelas_kegiatan.program_studi_id")
             ->groupBy("kegiatan_id");
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $detail_kegiatan_query
      * @param $filter_ruangan_id
      * @param $filter_waktu_mulai
      * @param $filter_waktu_selesai
@@ -81,19 +79,34 @@ class PenggunaanRuanganController extends Controller
             ->selectRaw("LOWER(rentang_waktu) AS waktu_mulai")
             ->selectRaw("UPPER(rentang_waktu) AS waktu_selesai")
             ->selectRaw("ruangan.nama AS nama_ruangan")
-            ->selectRaw("json_build_object('id', mata_kuliah.id, 'nama', mata_kuliah.nama) AS mata_kuliah")
-            ->selectRaw("detail_penggunaans")
+            ->selectRaw("
+                CASE
+                    WHEN mata_kuliah.id IS NOT NULL THEN
+                        json_build_object('id', mata_kuliah.id, 'nama', mata_kuliah.nama)
+                    ELSE NULL
+                END AS mata_kuliah
+                ")
+            ->selectRaw("
+                CASE
+                    WHEN seminar.id IS NOT NULL THEN
+                        json_build_object('id', seminar.id, 'nama', seminar.nama)
+                    ELSE NULL
+                END AS seminar
+                ")
+            ->selectRaw("kegiatan_kelas")
             ->leftJoin("kegiatan", "kegiatan.id", "jadwal.kegiatan_id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
             ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")
-            ->leftJoinSub($this->getDetailKegiatanQuery(), "detail_kegiatan", "detail_kegiatan.kegiatan_id", "kegiatan.id")
+            ->leftJoinSub($this->getKegiatanKelasQuery(), "kegiatan_kelas", "kegiatan_kelas.kegiatan_id", "kegiatan.id")
+            ->leftJoin("seminar", "seminar.kegiatan_id", "kegiatan.id")
             ->where("ruangan.id", $filter_ruangan_id)
             ->whereRaw("LOWER(rentang_waktu) >= ?", [$filter_waktu_mulai])
             ->whereRaw("UPPER(rentang_waktu) <= ?", [$filter_waktu_selesai])
             ->orderBy("rentang_waktu")
             ->withCasts([
-                "detail_penggunaans" => JsonCast::class,
+                "kegiatan_kelas" => JsonCast::class,
                 "mata_kuliah" => JsonCast::class,
+                "seminar" => JsonCast::class,
             ])
             ->paginate();
     }

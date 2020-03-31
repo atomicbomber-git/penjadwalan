@@ -65,7 +65,7 @@
 
                 <div class="form-group d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">
-                        Periksa Ketersediaan Ruangan
+                        Ubah Filter
                     </button>
                 </div>
             </form>

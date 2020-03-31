@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateJadwalView extends Migration
 {
@@ -17,15 +15,16 @@ class CreateJadwalView extends Migration
     public function up()
     {
         DB::statement("
-           CREATE OR REPLACE VIEW $this->view_name AS SELECT prefiltered_events.kegiatan_id, rentang_waktu
+           CREATE OR REPLACE VIEW $this->view_name AS SELECT prefiltered_events.id_kegiatan AS kegiatan_id, rentang_waktu
                 FROM (
-                         SELECT (row_number() OVER (PARTITION BY
-                             id_kegiatan ORDER BY date) - 1) % interval_perulangan = 0 AS included
+                         SELECT
+                            CASE WHEN berulang THEN (row_number - 1) % interval_perulangan = 0 ELSE TRUE END AS included
                               , *
                          FROM (SELECT extract(isodow FROM date)                         AS day_of_week
                                     , extract(day FROM date)                            AS day_of_month
                                     , extract(month FROM date)                          AS month_of_year
                                     , week_of_month(date::date, 1)                      AS week_of_month
+                                    , row_number() over (PARTITION BY id_kegiatan ORDER BY date) AS row_number
                                     , CASE
                                           WHEN berulang THEN
                                             tsrange(date + waktu_mulai, date + waktu_selesai)
