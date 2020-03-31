@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Date;
 
 class PenggunaanRuanganController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware([
+            "auth"
+        ]);
+    }
+
     /**
      * Handle the incoming request.
      *
@@ -49,7 +56,6 @@ class PenggunaanRuanganController extends Controller
             ->selectRaw("detail_penggunaans")
             ->leftJoin("kegiatan", "kegiatan.id", "jadwal.kegiatan_id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
-
             ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")
             ->leftJoinSub($detail_kegiatan_query, "detail_kegiatan", "detail_kegiatan.kegiatan_id", "kegiatan.id")
             ->where("ruangan.id", $filter_ruangan_id)
