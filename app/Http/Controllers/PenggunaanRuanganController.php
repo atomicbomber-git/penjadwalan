@@ -31,10 +31,29 @@ class PenggunaanRuanganController extends Controller
             ->get();
 
         $filter_ruangan_id = $request->get("filter_ruangan_id", $ruangans->first()->id);
+        $ruangan = $ruangans->where("id", $filter_ruangan_id)->first();
+
         $filter_waktu_mulai = $request->get("filter_waktu_mulai", Date::today()->format("Y-m-d H:i:s"));
         $filter_waktu_selesai = $request->get("filter_waktu_selesai", Date::today()->addMonths(1)->format("Y-m-d H:i:s"));
 
-        $detail_kegiatan_query = KelasKegiatan::query()
+        $jadwals = $this->getJadwal($filter_ruangan_id, $filter_waktu_mulai, $filter_waktu_selesai);
+
+        return view("penggunaan-ruangan", compact(
+            "filter_waktu_mulai",
+            "filter_waktu_selesai",
+            "filter_ruangan_id",
+            "ruangan",
+            "ruangans",
+            "jadwals",
+        ));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getDetailKegiatanQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return KelasKegiatan::query()
             ->select("kegiatan_id")
             ->selectRaw("
                 json_agg(
@@ -47,8 +66,18 @@ class PenggunaanRuanganController extends Controller
             ")
             ->leftJoin("program_studi", "program_studi.id", "kelas_kegiatan.program_studi_id")
             ->groupBy("kegiatan_id");
+    }
 
-        $jadwals = Jadwal::query()
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $detail_kegiatan_query
+     * @param $filter_ruangan_id
+     * @param $filter_waktu_mulai
+     * @param $filter_waktu_selesai
+     * @return mixed
+     */
+    private function getJadwal($filter_ruangan_id, $filter_waktu_mulai, $filter_waktu_selesai)
+    {
+        return Jadwal::query()
             ->selectRaw("LOWER(rentang_waktu) AS waktu_mulai")
             ->selectRaw("UPPER(rentang_waktu) AS waktu_selesai")
             ->selectRaw("ruangan.nama AS nama_ruangan")
@@ -57,7 +86,7 @@ class PenggunaanRuanganController extends Controller
             ->leftJoin("kegiatan", "kegiatan.id", "jadwal.kegiatan_id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
             ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")
-            ->leftJoinSub($detail_kegiatan_query, "detail_kegiatan", "detail_kegiatan.kegiatan_id", "kegiatan.id")
+            ->leftJoinSub($this->getDetailKegiatanQuery(), "detail_kegiatan", "detail_kegiatan.kegiatan_id", "kegiatan.id")
             ->where("ruangan.id", $filter_ruangan_id)
             ->whereRaw("LOWER(rentang_waktu) >= ?", [$filter_waktu_mulai])
             ->whereRaw("UPPER(rentang_waktu) <= ?", [$filter_waktu_selesai])
@@ -67,13 +96,5 @@ class PenggunaanRuanganController extends Controller
                 "mata_kuliah" => JsonCast::class,
             ])
             ->paginate();
-
-        return view("penggunaan-ruangan", compact(
-            "filter_waktu_mulai",
-            "filter_waktu_selesai",
-            "filter_ruangan_id",
-            "ruangans",
-            "jadwals"
-        ));
     }
 }

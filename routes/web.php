@@ -20,10 +20,12 @@ Route::get('/', function () {
     return redirect()->route("penggunaan-ruangan");
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
+Auth::routes([
+    "register" => false,
+    "reset" => false,
+    "confirm" => false,
+    "verify" => false,
+]);
 
 Route::resource('ruangan', class_basename(RuanganController::class))->only(["index"]);
 Route::get('/penggunaan-ruangan', class_basename(PenggunaanRuanganController::class))->name("penggunaan-ruangan");

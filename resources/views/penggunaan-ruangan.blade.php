@@ -5,15 +5,26 @@
         Penggunaan Ruangan
     </h1>
 
-    <penggunaan-ruangan-filter
-        filter-waktu-mulai="{{ $filter_waktu_mulai ?? null }}"
-        filter-waktu-selesai="{{ $filter_waktu_selesai ?? null }}"
-        :filter-ruangan-id='{{ $filter_ruangan_id ?? null }}'
-        :ruangans='{{ json_encode($ruangans ?? null) }}'
-    ></penggunaan-ruangan-filter>
+    <div class="mb-3">
+        <penggunaan-ruangan-filter
+            filter-waktu-mulai="{{ $filter_waktu_mulai ?? null }}"
+            filter-waktu-selesai="{{ $filter_waktu_selesai ?? null }}"
+            :filter-ruangan-id='{{ $filter_ruangan_id ?? null }}'
+            :ruangans='{{ json_encode($ruangans ?? null) }}'
+        ></penggunaan-ruangan-filter>
+    </div>
+
+
+    <div class="alert alert-info my-3">
+        Menampilkan penggunaan ruangan <strong> {{ $ruangan->nama }} </strong> dari
+        <strong>
+            {{ \App\Helpers\Formatter::fancyDatetime($filter_waktu_mulai) }} -
+            {{ \App\Helpers\Formatter::fancyDatetime($filter_waktu_selesai) }}
+        </strong>
+    </div>
 
     @foreach($jadwals AS $jadwal)
-        <div class="card mt-3">
+        <div class="card my-3">
             <div class="card-body">
                 <div class="card-title d-block h5">
                     <span class="h4 d-block font-weight-bold">
