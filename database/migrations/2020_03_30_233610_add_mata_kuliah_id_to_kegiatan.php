@@ -14,7 +14,8 @@ class AddMataKuliahIdToKegiatan extends Migration
     public function up()
     {
         Schema::table('kegiatan', function (Blueprint $table) {
-            //
+            $table->unsignedInteger('mata_kuliah_id')->nullable()->index();
+            $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliah');
         });
     }
 

@@ -14,31 +14,28 @@
 
     @foreach($jadwals AS $jadwal)
         <div class="card mt-3">
-            <div class="card-title">
-                <span class="text-primary d-block h5 font-weight-bold"> {{ \App\Helpers\Formatter::fancyDatetime($jadwal->waktu_mulai) }} - {{ \App\Helpers\Formatter::fancyDatetime($jadwal->waktu_selesai) }} </span>
-
-            </div>
-
             <div class="card-body">
+                <div class="card-title d-block h5">
+                    <span class="h4 d-block font-weight-bold">
+                        {{ $jadwal->mata_kuliah->nama }}
+                    </span>
+
+                    <span class="d-block text-primary">
+                        {{ \App\Helpers\Formatter::fancyDatetime($jadwal->waktu_mulai) }} -
+                        {{ \App\Helpers\Formatter::fancyDatetime($jadwal->waktu_selesai) }}
+                    </span>
+                </div>
 
                 <dl>
+                    <dt> Program Studi / Kelas </dt>
+                    <dd>
                     @foreach($jadwal->detail_penggunaans AS $detail_penggunaan)
-
-
-                        <dt>
-                            Mata Kuliah
-                        </dt>
-
-                        <dd>
-                            {{ $detail_penggunaan->mata_kuliah->nama }}
-                        </dd>
-
-                        <dt> Program Studi / Kelas </dt>
-                        <dd>
-                            {{ $detail_penggunaan->program_studi->nama }} / {{ $detail_penggunaan->tipe }}
-                        </dd>
-
+                        <span class="d-block">
+                            {{ $detail_penggunaan->program_studi->nama }} /
+                            {{ $detail_penggunaan->tipe }}
+                        </span>
                     @endforeach
+                    </dd>
                 </dl>
             </div>
         </div>

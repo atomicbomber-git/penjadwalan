@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\KelasMataKuliah;
+use App\KelasKegiatan;
 use Illuminate\Http\Request;
 
 class KelasMataKuliahController extends Controller
@@ -41,10 +41,10 @@ class KelasMataKuliahController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\KelasMataKuliah  $kelasMataKuliah
+     * @param  \App\KelasKegiatan  $kelasMataKuliah
      * @return \Illuminate\Http\Response
      */
-    public function show(KelasMataKuliah $kelasMataKuliah)
+    public function show(KelasKegiatan $kelasMataKuliah)
     {
         //
     }
@@ -52,10 +52,10 @@ class KelasMataKuliahController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\KelasMataKuliah  $kelasMataKuliah
+     * @param  \App\KelasKegiatan  $kelasMataKuliah
      * @return \Illuminate\Http\Response
      */
-    public function edit(KelasMataKuliah $kelasMataKuliah)
+    public function edit(KelasKegiatan $kelasMataKuliah)
     {
         //
     }
@@ -64,10 +64,10 @@ class KelasMataKuliahController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\KelasMataKuliah  $kelasMataKuliah
+     * @param  \App\KelasKegiatan  $kelasMataKuliah
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, KelasMataKuliah $kelasMataKuliah)
+    public function update(Request $request, KelasKegiatan $kelasMataKuliah)
     {
         //
     }
@@ -75,10 +75,10 @@ class KelasMataKuliahController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\KelasMataKuliah  $kelasMataKuliah
+     * @param  \App\KelasKegiatan  $kelasMataKuliah
      * @return \Illuminate\Http\Response
      */
-    public function destroy(KelasMataKuliah $kelasMataKuliah)
+    public function destroy(KelasKegiatan $kelasMataKuliah)
     {
         //
     }
