@@ -9,7 +9,7 @@ use App\ExcelImports\DataRowExtractors\LongRowExtractor;
 use App\ExcelImports\DataRowExtractors\ShortRowExtractor;
 use App\Kegiatan;
 use App\KegiatanKelasMataKuliah;
-use App\KelasKegiatan;
+use App\KelasMataKuliah;
 use App\MataKuliah;
 use App\MataKuliahProgramStudi;
 use App\PolaPerulangan;
@@ -176,11 +176,11 @@ class KegiatanImport implements ToCollection
         $kegiatan_id = DB::table("kegiatan")
             ->select('kegiatan.id')
             ->leftJoin("pola_perulangan", "pola_perulangan.kegiatan_id", "=", "kegiatan.id")
-            ->leftJoin("kelas_kegiatan", "kelas_kegiatan.kegiatan_id", "=", "kegiatan.id")
-            ->leftJoin("program_studi", "program_studi.id", "=", "kelas_kegiatan.program_studi_id")
-            ->leftJoin("mata_kuliah", "mata_kuliah.id", "=", "kegiatan.mata_kuliah_id")
-            ->leftJoin("tahun_ajaran", "tahun_ajaran.id", "=", "kelas_kegiatan.tahun_ajaran_id")
-            ->leftJoin("tipe_semester", "tipe_semester.id", "=", "kelas_kegiatan.tipe_semester_id")
+            ->leftJoin("kelas_mata_kuliah", "kelas_mata_kuliah.kegiatan_id", "=", "kegiatan.id")
+            ->leftJoin("program_studi", "program_studi.id", "=", "kelas_mata_kuliah.program_studi_id")
+            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kelas_mata_kuliah.mata_kuliah_id")
+            ->leftJoin("tahun_ajaran", "tahun_ajaran.id", "=", "kelas_mata_kuliah.tahun_ajaran_id")
+            ->leftJoin("tipe_semester", "tipe_semester.id", "=", "kelas_mata_kuliah.tipe_semester_id")
             ->leftJoin("ruangan", "ruangan.id", "=", "kegiatan.ruangan_id")
             ->where("tipe_semester.id", $this->tipe_semester->id)
             ->where("tahun_ajaran.id", $this->tahun_ajaran->id)
@@ -203,16 +203,16 @@ class KegiatanImport implements ToCollection
                 "waktu_mulai" => $start_time,
                 "waktu_selesai" => $end_time,
                 "berulang" => true,
-                "mata_kuliah_id" => $mata_kuliah->id,
             ])->id;
         }
 
-        KelasKegiatan::query()->create([
+        KelasMataKuliah::query()->create([
             "kegiatan_id" => $kegiatan_id,
             "tipe" => $primaryRowDataExtractor->getType(),
             "tipe_semester_id" => $this->tipe_semester->id,
             "tahun_ajaran_id" => $this->tahun_ajaran->id,
             "program_studi_id" => $this->program_studi->id,
+            "mata_kuliah_id" => $mata_kuliah->id,
         ]);
 
         PolaPerulangan::query()->firstOrCreate([

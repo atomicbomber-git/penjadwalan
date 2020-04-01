@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\KelasKegiatan;
+use App\KelasMataKuliah;
 use Faker\Generator as Faker;
 
-$factory->define(KelasKegiatan::class, function (Faker $faker) {
+$factory->define(KelasMataKuliah::class, function (Faker $faker) {
     return [
         //
     ];

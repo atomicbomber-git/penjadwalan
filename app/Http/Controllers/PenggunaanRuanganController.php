@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Casts\JsonCast;
 use App\Jadwal;
-use App\KelasKegiatan;
+use App\KelasMataKuliah;
 use App\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -52,7 +52,7 @@ class PenggunaanRuanganController extends Controller
      */
     private function getKegiatanKelasQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return KelasKegiatan::query()
+        return KelasMataKuliah::query()
             ->select("kegiatan_id")
             ->selectRaw("
                 json_agg(
@@ -63,8 +63,16 @@ class PenggunaanRuanganController extends Controller
                     ORDER BY program_studi.nama, tipe
                     ) AS kegiatan_kelas
             ")
-            ->leftJoin("program_studi", "program_studi.id", "kelas_kegiatan.program_studi_id")
-            ->groupBy("kegiatan_id");
+            ->selectRaw("
+                CASE
+                    WHEN mata_kuliah.id IS NOT NULL THEN
+                        json_build_object('id', mata_kuliah.id, 'nama', mata_kuliah.nama)
+                    ELSE NULL
+                END AS mata_kuliah
+            ")
+            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kelas_mata_kuliah.mata_kuliah_id")
+            ->leftJoin("program_studi", "program_studi.id", "kelas_mata_kuliah.program_studi_id")
+            ->groupBy("kegiatan_id", "mata_kuliah.id");
     }
 
     /**
@@ -81,19 +89,13 @@ class PenggunaanRuanganController extends Controller
             ->selectRaw("ruangan.nama AS nama_ruangan")
             ->selectRaw("
                 CASE
-                    WHEN mata_kuliah.id IS NOT NULL THEN
-                        json_build_object('id', mata_kuliah.id, 'nama', mata_kuliah.nama)
-                    ELSE NULL
-                END AS mata_kuliah
-                ")
-            ->selectRaw("
-                CASE
                     WHEN seminar.id IS NOT NULL THEN
                         json_build_object('id', seminar.id, 'nama', seminar.nama)
                     ELSE NULL
                 END AS seminar
                 ")
             ->selectRaw("kegiatan_kelas")
+            ->selectRaw("mata_kuliah")
             ->leftJoin("kegiatan", "kegiatan.id", "jadwal.kegiatan_id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
             ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")

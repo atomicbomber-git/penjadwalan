@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Kegiatan;
-use App\KelasKegiatan;
+use App\KelasMataKuliah;
 use App\ProgramStudi;
 use App\TahunAjaran;
 use App\TipeSemester;
@@ -29,17 +29,17 @@ class KegiatanController extends Controller
         $kegiatans = Kegiatan::query()
             ->select(
                 "kegiatan.id",
-                "mata_kuliah.nama AS nama_mata_kuliah",
                 "hari_dalam_minggu",
             )
             ->orderByRaw("pola_perulangan.hari_dalam_minggu")
             ->leftJoin("pola_perulangan", "pola_perulangan.kegiatan_id", "kegiatan.id")
-            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
-            ->leftJoinSub($this->getKelasKegiatanQuery(), "kelas_kegiatan", "kelas_kegiatan.kegiatan_id", "kegiatan.id")
-            ->where("kelas_kegiatan.program_studi_id", "=", $program_studi_id)
-            ->where("kelas_kegiatan.tahun_ajaran_id", "=", $tahun_ajaran_id)
-            ->where("kelas_kegiatan.tipe_semester_id", "=", $tipe_semester_id)
+            ->leftJoinSub($this->getKelasKegiatanQuery(), "kelas_mata_kuliah", "kelas_mata_kuliah.kegiatan_id", "kegiatan.id")
+            ->where("kelas_mata_kuliah.program_studi_id", "=", $program_studi_id)
+            ->where("kelas_mata_kuliah.tahun_ajaran_id", "=", $tahun_ajaran_id)
+            ->where("kelas_mata_kuliah.tipe_semester_id", "=", $tipe_semester_id)
             ->paginate();
+
+        return $kegiatans;
 
         return view("kegiatan.index", compact(
             "program_studis",
@@ -123,8 +123,8 @@ class KegiatanController extends Controller
      */
     private function getKelasKegiatanQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        $kelas_kegiatan_query = KelasKegiatan::query()
-            ->select("kegiatan_id", "program_studi_id", "tahun_ajaran_id", "tipe_semester_id")
+        return KelasMataKuliah::query()
+            ->select("kegiatan_id", "kelas_mata_kuliah.program_studi_id", "tahun_ajaran_id", "tipe_semester_id", "mata_kuliah.nama AS nama_mata_kuliah")
             ->selectRaw("
                 json_agg(
                     json_build_object(
@@ -134,8 +134,9 @@ class KegiatanController extends Controller
                     ORDER BY program_studi.nama, tipe
                     ) AS kegiatan_kelas
             ")
-            ->leftJoin("program_studi", "program_studi.id", "kelas_kegiatan.program_studi_id")
-            ->groupBy("kegiatan_id", "program_studi_id", "tahun_ajaran_id", "tipe_semester_id");
-        return $kelas_kegiatan_query;
+
+            ->leftJoin("program_studi", "program_studi.id", "kelas_mata_kuliah.program_studi_id")
+            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kelas_mata_kuliah.mata_kuliah_id")
+            ->groupBy("kegiatan_id", "kelas_mata_kuliah.program_studi_id", "tahun_ajaran_id", "tipe_semester_id", "mata_kuliah.nama");
     }
 }
