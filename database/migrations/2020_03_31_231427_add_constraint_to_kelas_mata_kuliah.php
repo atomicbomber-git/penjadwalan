@@ -15,10 +15,6 @@ class AddConstraintToKelasMataKuliah extends Migration
     public function up()
     {
         DB::statement("
-            CREATE EXTENSION IF NOT EXISTS btree_gist
-        ");
-
-        DB::statement("
             ALTER TABLE kelas_mata_kuliah
                 ADD CONSTRAINT k_id_mk_id
                 EXCLUDE USING gist (
