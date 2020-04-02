@@ -15,13 +15,13 @@ class CreateKelasMataKuliahTable extends Migration
     {
         Schema::create('kelas_mata_kuliah', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('kegiatan_id')->index();
+            $table->unsignedInteger('kegiatan_id')->nullable()->index();
             $table->unsignedInteger('mata_kuliah_id')->index();
             $table->string('tipe')->comment("Kelas A, kelas B");
             $table->timestamps();
 
             $table->foreign('mata_kuliah_id')->references('id')->on('mata_kuliah');
-            $table->foreign('kegiatan_id')->references('id')->on('kegiatan');
+            $table->foreign('kegiatan_id')->references('id')->on('kegiatan')->onDelete("SET NULL");
         });
     }
 

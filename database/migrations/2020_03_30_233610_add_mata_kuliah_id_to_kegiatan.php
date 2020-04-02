@@ -27,7 +27,8 @@ class AddMataKuliahIdToKegiatan extends Migration
     public function down()
     {
         Schema::table('kegiatan', function (Blueprint $table) {
-            //
+            $table->dropForeign(['mata_kuliah_id']);
+            $table->dropColumn('mata_kuliah_id');
         });
     }
 }

@@ -257,6 +257,7 @@ class KegiatanImport implements ToCollection
         $this->extractProgramStudi($rows->shift()->first());
 
         if (in_array($this->program_studi->nama, $this->ignoredProgramStudis)) {
+            $this->program_studi->forceDelete();
             return;
         }
 

@@ -99,7 +99,7 @@
         <div class="row">
 
             @auth
-                <aside class="col-sm-12 col-md-3 mb-4 mb-sm-0 ">
+                <aside class="col-sm-12 col-md-2 mb-4 mb-sm-0 ">
                     <nav class="nav flex-column">
                         <div class="my-3">
                             <div class="font-weight-bold text-primary text-uppercase border-bottom">
@@ -107,8 +107,8 @@
                             </div>
 
                             <div class="nav-item">
-                                <a class="px-0" href="{{ route("kegiatan.index") }}">
-                                    Kegiatan
+                                <a class="px-0" href="{{ route("kegiatan-belajar.index") }}">
+                                    Kegiatan Belajar
                                 </a>
                             </div>
 
@@ -135,7 +135,7 @@
                 </aside>
             @endauth
 
-            <main class="col-sm-12 @auth col-md-9 @else col-md-12 @endauth ">
+            <main class="col-sm-12 @auth col-md-10 @else col-md-12 @endauth ">
                 @yield('content')
             </main>
         </div>

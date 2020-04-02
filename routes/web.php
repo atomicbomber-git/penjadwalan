@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KegiatanBelajarController;
 use App\Http\Controllers\PenggunaanRuanganController;
 use App\Http\Controllers\RuanganController;
 use Illuminate\Support\Facades\Auth;
@@ -29,5 +29,5 @@ Auth::routes([
 ]);
 
 Route::resource('ruangan', class_basename(RuanganController::class))->only(["index"]);
-Route::resource('kegiatan', class_basename(KegiatanController::class));
+Route::resource('kegiatan-belajar', class_basename(KegiatanBelajarController::class))->parameters(["kegiatan-belajar" => "kegiatan-belajar"]);
 Route::get('/penggunaan-ruangan', class_basename(PenggunaanRuanganController::class))->name("penggunaan-ruangan");
