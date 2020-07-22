@@ -17,6 +17,10 @@ class ExcelDataSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement("
+            SET DateStyle TO MDY
+        ");
+
         $filenames = array_filter(Storage::disk("seed")->allFiles(), function ($filename) {
             return !Str::startsWith($filename, ".~lock.");
         });
