@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -33,6 +35,11 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+    }
+
+    public static function defaultHomeRoute(?User $user = null)
+    {
+        return route("kegiatan-belajar.index");
     }
 
     /**

@@ -2,7 +2,17 @@
 
 
 @section("content")
-    <h1>
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item"
+           href="{{ \App\Providers\RouteServiceProvider::defaultHomeRoute(auth()->user()) }}">
+            {{ config("app.name")  }}
+        </a>
+        <span class="breadcrumb-item active">
+            Kegiatan Belajar
+        </span>
+    </nav>
+
+    <h1 class="feature-title">
         Kegiatan Belajar
     </h1>
 
@@ -68,7 +78,7 @@
                 href="{{ route("kegiatan-belajar.create", [
                         "tipe_semester_id" => $tipe_semester->id,
                         "tahun_ajaran_id" => $tahun_ajaran->id,
-                        "program_studi_id" => $program_studi->id
+                        "program_studi_id" => $program_studi->id,
                         ]) }}"
                 class="btn btn-dark btn-sm">
                 Tambah Kegiatan Belajar
@@ -119,7 +129,8 @@
                                                 "kegiatan_belajar" => $kegiatan->id,
                                                 "tipe_semester_id" => $tipe_semester->id,
                                                 "tahun_ajaran_id" => $tahun_ajaran->id,
-                                                "program_studi_id" => $program_studi->id
+                                                "program_studi_id" => $program_studi->id,
+                                                "page" => request("page") ?? 1,
                                          ]) }}"
                                    class="btn btn-sm btn-info mr-2">
                                     Ubah

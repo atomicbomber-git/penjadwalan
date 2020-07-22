@@ -110,12 +110,6 @@
                                     Kegiatan Belajar
                                 </a>
                             </div>
-
-                            <div class="nav-item">
-                                <a class="px-0" href="{{ route("ruangan.index") }}">
-                                    Ruangan
-                                </a>
-                            </div>
                         </div>
 
                         <div class="my-3">

@@ -1,7 +1,17 @@
 @extends("layouts.app")
 
 @section("content")
-    <h1>
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item"
+           href="{{ \App\Providers\RouteServiceProvider::defaultHomeRoute(auth()->user()) }}">
+            {{ config("app.name")  }}
+        </a>
+        <span class="breadcrumb-item active">
+            Penggunaan Ruangan
+        </span>
+    </nav>
+
+    <h1 class="feature-title">
         Penggunaan Ruangan
     </h1>
 

@@ -2036,7 +2036,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
 
-      console.log(this.picked_kelas_mata_kuliahs[0].program_studi_id);
       return this.m_kelas_mata_kuliahs.filter(function (kmk) {
         return !kmk.picked;
       }).filter(function (kmk) {
@@ -77759,8 +77758,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/vagrant/penjadwalan/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/vagrant/penjadwalan/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/atomicbomber/projects/penjadwalan/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/atomicbomber/projects/penjadwalan/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

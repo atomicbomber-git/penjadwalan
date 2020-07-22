@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Casts\JsonCast;
 use App\Constants\MessageState;
 use App\Kegiatan;
 use App\KelasMataKuliah;
-use App\MataKuliah;
 use App\ProgramStudi;
 use App\Ruangan;
 use App\TahunAjaran;
 use App\TipeSemester;
+use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class KegiatanBelajarController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Response|View
      */
     public function index(Request $request)
     {
@@ -71,7 +76,7 @@ class KegiatanBelajarController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create(Request $request)
     {
@@ -106,8 +111,8 @@ class KegiatanBelajarController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -117,8 +122,8 @@ class KegiatanBelajarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Kegiatan  $kegiatan
-     * @return \Illuminate\Http\Response
+     * @param Kegiatan $kegiatan
+     * @return Response
      */
     public function show(Kegiatan $kegiatan)
     {
@@ -128,70 +133,55 @@ class KegiatanBelajarController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Kegiatan $kegiatan
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Kegiatan $kegiatan
+     * @return Response
+     * @throws ValidationException
      */
     public function edit(Kegiatan $kegiatan_belajar, Request $request)
     {
-        $data = $request->validate([
-            "tahun_ajaran_id" => "required|exists:tahun_ajaran,id",
-            "tipe_semester_id" => "required|exists:tipe_semester,id",
-            "program_studi_id" => "required|exists:program_studi,id",
-        ]);
-
-        $kegiatan = Kegiatan::query()
-            ->select(
-                "kegiatan.id",
-                "hari_dalam_minggu",
-                "tanggal_mulai",
-                "tanggal_selesai",
-                "waktu_mulai",
-                "waktu_selesai",
-                "berulang",
-                "mata_kuliah.nama AS nama_mata_kuliah",
-                "kelas_mata_kuliah.tipe_kelas",
-                "ruangan.nama AS nama_ruangan"
-            )
-            ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")
-            ->leftJoin("pola_perulangan", "pola_perulangan.kegiatan_id", "kegiatan.id")
-            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan_kelas.mata_kuliah_id")
-            ->where("kegiatan.id", $kegiatan_belajar->id)
-            ->leftJoinSub($this->getKelasKegiatanQuery(), "kegiatan_kelas", "kegiatan_kelas.kegiatan_id", "kegiatan.id")
+        $ruangans = Ruangan::query()
+            ->orderBy("nama")
             ->get();
 
-        $ruangans = Ruangan::query()->get();
-        $mata_kuliahs = MataKuliah::query()
-            ->where(function (Builder $query) use($data) {
-                $query
-                    ->where("program_studi_id", $data["program_studi_id"])
-                    ->orWhere("program_studi_id", null);
-            })
-            ->get();
-
-        return view("kegiatan-belajar.edit", array_merge([
-            compact("ruangans", "mata_kuliahs", "kegiatan_belajar"),
-            $data
-        ]));
+        return response()->view("kegiatan-belajar.edit", compact(
+            "kegiatan_belajar",
+            "ruangans"
+        ));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Kegiatan  $kegiatan
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Kegiatan $kegiatan_belajar
+     * @return RedirectResponse
      */
-    public function update(Request $request, Kegiatan $kegiatan)
+    public function update(Request $request, Kegiatan $kegiatan_belajar)
     {
-        //
+        $data = $request->validate([
+            "tanggal_mulai" => ["required", "date_format:Y-m-d"],
+            "tanggal_selesai" => ["required", "date_format:Y-m-d"],
+            "waktu_mulai" => ["required", "date_format:H:i:s"],
+            "waktu_selesai" => ["required", "date_format:H:i:s"],
+            "ruangan_id" => ["required", Rule::exists(Ruangan::class, "id")],
+        ]);
+
+        $kegiatan_belajar->update($data);
+
+        return redirect()->back()
+            ->with("messages", [
+                [
+                    "state" => MessageState::STATE_SUCCESS,
+                    "content" => __("messages.update.success")
+                ]
+            ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Kegiatan  $kegiatan
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @param Kegiatan $kegiatan
+     * @return RedirectResponse|Response
      */
     public function destroy(Kegiatan $kegiatan_belajar)
     {
@@ -203,7 +193,7 @@ class KegiatanBelajarController extends Controller
                 "state" => MessageState::STATE_SUCCESS,
                 "content" => __("messages.delete.success")
             ];
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $messages[] = [
                 "state" => MessageState::STATE_DANGER,
                 "content" => __("messages.delete.failure")
@@ -216,9 +206,9 @@ class KegiatanBelajarController extends Controller
 
     /**
      * @param int $program_studi_id
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    private function getKelasKegiatanQuery(): \Illuminate\Database\Eloquent\Builder
+    private function getKelasKegiatanQuery(): Builder
     {
         return KelasMataKuliah::query()
             ->select(
