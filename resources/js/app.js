@@ -30,8 +30,18 @@ Settings.defaultLocale = 'id';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import lodash from "lodash"
+
 Vue.mixin({
+    data() {
+        return {
+            error_data: null,
+        }
+    },
+
     methods: {
+        get: lodash.get,
+
         normalizeDatetime: function (date) {
             return moment(date).format("YYYY-MM-DD HH:mm:ss")
         }

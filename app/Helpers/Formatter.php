@@ -15,6 +15,6 @@ class Formatter
      */
     public static function fancyDatetime($datetime)
     {
-        return (new Date($datetime))->format("l, d F Y H:i:s");
+        return (new \Jenssegers\Date\Date($datetime))->format("l, d F Y H:i:s");
     }
 }

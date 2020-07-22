@@ -1899,6 +1899,160 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    "ruangans": Array,
+    "kelas_mata_kuliahs": Array
+  },
+  components: {
+    Multiselect: __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js").Multiselect,
+    datetime: __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js").Datetime
+  },
+  data: function data() {
+    return {
+      kelas_mata_kuliah: null,
+      m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(function (kmk) {
+        return _objectSpread({}, kmk, {
+          picked: false
+        });
+      })
+    };
+  },
+  watch: {
+    kelas_mata_kuliah: function kelas_mata_kuliah(new_kelas_mata_kuliah) {
+      if (new_kelas_mata_kuliah === null) {
+        return;
+      }
+
+      new_kelas_mata_kuliah.picked = true;
+      this.kelas_mata_kuliah = null;
+    }
+  },
+  methods: {
+    onFormSubmit: function onFormSubmit() {},
+    kelasMataKuliahSelectLabel: function kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
+      return "".concat(kelas_mata_kuliah.tipe, " (").concat(kelas_mata_kuliah.nama, " / ").concat(kelas_mata_kuliah.kode, ")");
+    }
+  },
+  computed: {
+    kelas_mata_kuliah_options: function kelas_mata_kuliah_options() {
+      var _this = this;
+
+      if (this.picked_kelas_mata_kuliahs.length === 0) {
+        return this.m_kelas_mata_kuliahs.filter(function (kmk) {
+          return !kmk.picked;
+        });
+      }
+
+      console.log(this.picked_kelas_mata_kuliahs[0].program_studi_id);
+      return this.m_kelas_mata_kuliahs.filter(function (kmk) {
+        return !kmk.picked;
+      }).filter(function (kmk) {
+        return kmk.mata_kuliah_id === _this.picked_kelas_mata_kuliahs[0].mata_kuliah_id;
+      });
+    },
+    picked_kelas_mata_kuliahs: function picked_kelas_mata_kuliahs() {
+      return this.m_kelas_mata_kuliahs.filter(function (kmk) {
+        return kmk.picked;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarEdit.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/KegiatanBelajarEdit.vue?vue&type=script&lang=js& ***!
@@ -64287,6 +64441,168 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card my-3" }, [
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.onFormSubmit($event)
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", { attrs: { for: "kelas_mata_kuliah_id" } }, [
+                _vm._v(
+                  "\n                    Kelas Mata Kuliah:\n                "
+                )
+              ]),
+              _vm._v(" "),
+              _c("multiselect", {
+                attrs: {
+                  id: "kelas_mata_kuliah_id",
+                  placeholder: "Kelas Mata Kuliah",
+                  selectLabel: "",
+                  selectedLabel: "",
+                  deselectLabel: "",
+                  "track-by": "id",
+                  "custom-label": _vm.kelasMataKuliahSelectLabel,
+                  options: _vm.kelas_mata_kuliah_options
+                },
+                model: {
+                  value: _vm.kelas_mata_kuliah,
+                  callback: function($$v) {
+                    _vm.kelas_mata_kuliah = $$v
+                  },
+                  expression: "kelas_mata_kuliah"
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { staticClass: "error" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(
+                      _vm.get(this.error_data, "kelas_mata_kuliah_id[0]", "")
+                    ) +
+                    "\n                "
+                )
+              ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("table", { staticClass: "table table-sm table-striped" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.picked_kelas_mata_kuliahs, function(
+                  kelas_mata_kuliah,
+                  index
+                ) {
+                  return _c("tr", [
+                    _c("td", [_vm._v(" " + _vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.nama))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.kode))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.tipe))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              kelas_mata_kuliah.picked = false
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" })
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v(" #")]),
+        _vm._v(" "),
+        _c("th", [_vm._v(" Mata Kuliah")]),
+        _vm._v(" "),
+        _c("th", [_vm._v(" Kode")]),
+        _vm._v(" "),
+        _c("th", [_vm._v(" Kelas")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [
+          _c("i", { staticClass: "fas fa-cog" })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-group d-flex justify-content-center" },
+      [
+        _c("button", { staticClass: "btn btn-primary" }, [
+          _vm._v("\n                    Submit\n                ")
+        ])
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarEdit.vue?vue&type=template&id=6c851936&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/KegiatanBelajarEdit.vue?vue&type=template&id=6c851936& ***!
@@ -77080,6 +77396,7 @@ module.exports = JSON.parse("{\"_from\":\"weekstart\",\"_id\":\"weekstart@1.0.1\
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"./components/KegiatanBelajarCreate.vue": "./resources/js/components/KegiatanBelajarCreate.vue",
 	"./components/KegiatanBelajarEdit.vue": "./resources/js/components/KegiatanBelajarEdit.vue",
 	"./components/PenggunaanRuanganFilter.vue": "./resources/js/components/PenggunaanRuanganFilter.vue"
 };
@@ -77119,6 +77436,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var luxon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! luxon */ "./node_modules/luxon/build/cjs-browser/luxon.js");
 /* harmony import */ var luxon__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(luxon__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -77150,8 +77469,15 @@ luxon__WEBPACK_IMPORTED_MODULE_1__["Settings"].defaultLocale = 'id';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
 Vue.mixin({
+  data: function data() {
+    return {
+      error_data: null
+    };
+  },
   methods: {
+    get: lodash__WEBPACK_IMPORTED_MODULE_2___default.a.get,
     normalizeDatetime: function normalizeDatetime(date) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("YYYY-MM-DD HH:mm:ss");
     }
@@ -77205,6 +77531,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/KegiatanBelajarCreate.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/KegiatanBelajarCreate.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28& */ "./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28&");
+/* harmony import */ var _KegiatanBelajarCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./KegiatanBelajarCreate.vue?vue&type=script&lang=js& */ "./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _KegiatanBelajarCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/KegiatanBelajarCreate.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_KegiatanBelajarCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./KegiatanBelajarCreate.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_KegiatanBelajarCreate_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/KegiatanBelajarCreate.vue?vue&type=template&id=7c976e28&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_KegiatanBelajarCreate_vue_vue_type_template_id_7c976e28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

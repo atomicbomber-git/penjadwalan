@@ -97,7 +97,6 @@
 
     <div class="container">
         <div class="row">
-
             @auth
                 <aside class="col-sm-12 col-md-2 mb-4 mb-sm-0 ">
                     <nav class="nav flex-column">

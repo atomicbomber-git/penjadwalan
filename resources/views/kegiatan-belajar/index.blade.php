@@ -13,49 +13,49 @@
 
         <div class="card-body">
             <form>
-                <div class="form-group">
+                <div class="form-group form-group-sm">
                     <label for="tahun_ajaran_id"> Tahun Ajaran</label>
-                    <select class="form-control"
+                    <select class="form-control form-control-sm"
                             name="tahun_ajaran_id"
                             id="tahun_ajaran_id">
                         @foreach($tahun_ajarans AS $tahun_ajaran)
-                            <option value="{{ $tahun_ajaran->id }}" {{ $tahun_ajaran->id == old("tahun_ajaran_id", $tahun_ajaran_id) ? "selected" : ""}}>
+                            <option value="{{ $tahun_ajaran->id }}" {{ $tahun_ajaran->id == old("tahun_ajaran_id", $tahun_ajaran->id) ? "selected" : ""}}>
                                 {{ $tahun_ajaran->tahun_mulai }} - {{ $tahun_ajaran->tahun_selesai }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group form-group-sm">
                     <label for="tipe_semester_id"> Tipe Semester</label>
-                    <select class="form-control"
+                    <select class="form-control form-control-sm"
                             name="tipe_semester_id"
                             id="tipe_semester_id">
                         @foreach($tipe_semesters AS $tipe_semester)
-                            <option value="{{ $tipe_semester->id }}" {{ $tipe_semester->id == old("tipe_semester_id", $tipe_semester_id) ? "selected" : ""}}>
+                            <option value="{{ $tipe_semester->id }}" {{ $tipe_semester->id == old("tipe_semester_id", $tipe_semester->id) ? "selected" : ""}}>
                                 {{ $tipe_semester->nama }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group form-group-sm">
                     <label for="program_studi_id"> Program Studi</label>
-                    <select class="form-control"
+                    <select class="form-control form-control-sm"
                             name="program_studi_id"
                             id="program_studi_id">
                         @foreach($program_studis AS $program_studi)
-                            <option value="{{ $program_studi->id }}" {{ $program_studi->id == old("program_studi_id", $program_studi_id) ? "selected" : ""}}>
+                            <option value="{{ $program_studi->id }}" {{ $program_studi->id == old("program_studi_id", $program_studi->id) ? "selected" : ""}}>
                                 {{ $program_studi->nama }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary btn-sm">
                         Filter
+                        <i class="fas fa-filter"></i>
                     </button>
                 </div>
             </form>
@@ -63,7 +63,26 @@
     </div>
 
     <div class="my-3">
+        <div class="d-flex justify-content-end">
+            <a
+                href="{{ route("kegiatan-belajar.create", [
+                        "tipe_semester_id" => $tipe_semester->id,
+                        "tahun_ajaran_id" => $tahun_ajaran->id,
+                        "program_studi_id" => $program_studi->id
+                        ]) }}"
+                class="btn btn-dark btn-sm">
+                Tambah Kegiatan Belajar
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+
         @include("layouts._messages")
+    </div>
+
+    <div class="alert alert-info">
+        Menampilkan kegiatan belajar untuk Program Studi <strong> {{ $program_studis[$program_studi->id]->nama }} </strong>
+        Tahun Ajaran <strong> {{ $tahun_ajaran->tahun_mulai }} - {{ $tahun_ajaran->tahun_selesai }} </strong>
+        Semester <strong> {{ $tipe_semester->nama }} </strong>
     </div>
 
     <div class="card my-3">
@@ -96,19 +115,25 @@
                             <td> {{ $kegiatan->waktu_mulai }} - {{ $kegiatan->waktu_selesai }} </td>
                             <th> {{ $kegiatan->nama_ruangan }} </th>
                             <td class="d-flex justify-content-center">
-                                <a href="{{ route("kegiatan-belajar.edit", ["kegiatan_belajar" => $kegiatan->id, "tipe_semester_id" => $tipe_semester_id, "tahun_ajaran_id" => $tahun_ajaran_id, "program_studi_id" => $program_studi_id]) }}"
+                                <a href="{{ route("kegiatan-belajar.edit", [
+                                                "kegiatan_belajar" => $kegiatan->id,
+                                                "tipe_semester_id" => $tipe_semester->id,
+                                                "tahun_ajaran_id" => $tahun_ajaran->id,
+                                                "program_studi_id" => $program_studi->id
+                                         ]) }}"
                                    class="btn btn-sm btn-info mr-2">
                                     Ubah
                                     <i class="fas fa-pencil-alt  "></i>
                                 </a>
 
-                                <form method="POST" action="{{ route("kegiatan-belajar.destroy", $kegiatan) }}">
+                                <form method="POST"
+                                      action="{{ route("kegiatan-belajar.destroy", $kegiatan) }}">
                                     @method("DELETE")
                                     @csrf
 
                                     <button
                                         class="btn btn-danger btn-sm ml-2"
-                                        >
+                                    >
                                         Hapus
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
