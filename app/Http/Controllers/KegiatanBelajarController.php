@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\MessageState;
 use App\Kegiatan;
 use App\KelasMataKuliah;
+use App\MataKuliah;
 use App\ProgramStudi;
 use App\Ruangan;
 use App\TahunAjaran;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -100,11 +102,32 @@ class KegiatanBelajarController extends Controller
             ->orderByRaw("mata_kuliah.nama, kelas_mata_kuliah.tipe")
             ->get();
 
+        $mata_kuliahs = MataKuliah::query()
+            ->when($tipe_semester->nama == "GASAL", function (Builder $builder) {
+                $builder->whereRaw("semester % 2 = 1");
+            })
+            ->when($tipe_semester->nama == "GENAP", function (Builder $builder) {
+                $builder->whereRaw("semester % 2 = 0");
+            })
+            ->where(function (Builder $builder) use ($program_studi) {
+                $builder
+                    ->where("program_studi_id", $program_studi->id)
+                    ->orWhereNull("program_studi_id");
+            })
+            ->orderBy("nama")
+            ->get();
+
+        $ruangans = Ruangan::query()
+            ->orderBy("nama")
+            ->get();
+
         return response()->view("kegiatan-belajar.create", compact(
             "kelas_mata_kuliahs",
             "tahun_ajaran",
             "tipe_semester",
-            "program_studi"
+            "program_studi",
+            "ruangans",
+            "mata_kuliahs"
         ));
     }
 
@@ -116,7 +139,43 @@ class KegiatanBelajarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "tipes.*.name" => ["required"],
+            "mata_kuliah_id" => ["required", Rule::exists(MataKuliah::class, "id")],
+            "tanggal_mulai" => ["required", "date_format:Y-m-d"],
+            "tanggal_selesai" => ["required", "date_format:Y-m-d"],
+            "waktu_mulai" => ["required", "date_format:H:i:s"],
+            "waktu_selesai" => ["required", "date_format:H:i:s"],
+            "ruangan_id" => ["required", Rule::exists(Ruangan::class, "id")],
+            "tipe_semester_id" => ["required"],
+            "tahun_ajaran_id" => ["required"],
+            "program_studi_id" => ["required"],
+        ]);
+
+        DB::beginTransaction();
+
+        $kegiatan = Kegiatan::query()->create(array_merge(Arr::only($data, [
+            "tanggal_mulai",
+            "tanggal_selesai",
+            "waktu_mulai",
+            "waktu_selesai",
+            "ruangan_id",
+        ]), [
+            "berulang" => 0,
+        ]));
+
+        foreach ($data["tipes"] as $tipe) {
+            KelasMataKuliah::query()->create([
+                "kegiatan_id" => $kegiatan->id,
+                "tipe" => $tipe["name"],
+                "mata_kuliah_id" => $data["mata_kuliah_id"],
+                "tipe_semester_id" => $data["tipe_semester_id"],
+                "tahun_ajaran_id" => $data["tahun_ajaran_id"],
+                "program_studi_id" => $data["program_studi_id"],
+            ]);
+        }
+
+        DB::commit();
     }
 
     /**
