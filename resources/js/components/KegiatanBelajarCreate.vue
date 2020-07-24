@@ -21,7 +21,7 @@
                     >
                     </multiselect>
 
-                    <label class="error">
+                    <label class="invalid-feedback">
                         {{ get(this.error_data, 'kelas_mata_kuliah_id[0]', '') }}
                     </label>
                 </div>
@@ -56,14 +56,99 @@
                             </td>
                         </tr>
                         </tbody>
-
                     </table>
+
+                    <div class="form-group">
+                        <label for="tanggal_mulai">
+                            Tanggal Mulai:
+                        </label>
+
+                        <input
+                            id="tanggal_mulai"
+                            v-model="tanggal_mulai"
+                            placeholder="Tanggal Mulai"
+                            class="form-control"
+                            :class="{ 'is-invalid': get(this.error_data, 'tanggal_mulai[0]', false) }"
+                            type="date"
+                        />
+                        <label class="invalid-feedback">
+                            {{ get(this.error_data, 'tanggal_mulai[0]', '') }}
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal_selesai">
+                            Tanggal Selesai:
+                        </label>
+
+                        <input
+                            id="tanggal_selesai"
+                            v-model="tanggal_selesai"
+                            placeholder="Tanggal Selesai"
+                            class="form-control"
+                            :class="{ 'is-invalid': get(this.error_data, 'tanggal_selesai[0]', false) }"
+                            type="date"
+                        />
+                        <label class="invalid-feedback">
+                            {{ get(this.error_data, 'tanggal_selesai[0]', '') }}
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="waktu_mulai">
+                            Waktu Mulai:
+                        </label>
+
+                        <input
+                            id="waktu_mulai"
+                            v-model="waktu_mulai"
+                            placeholder="Waktu Mulai"
+                            class="form-control"
+                            :class="{ 'is-invalid': get(this.error_data, 'waktu_mulai[0]', false) }"
+                            type="time"
+                        />
+                        <label class="invalid-feedback">
+                            {{ get(this.error_data, 'waktu_mulai[0]', '') }}
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="waktu_selesai">
+                            Waktu Selesai:
+                        </label>
+
+                        <input
+                            id="waktu_selesai"
+                            v-model="waktu_selesai"
+                            placeholder="Waktu Selesai"
+                            class="form-control"
+                            :class="{ 'is-invalid': get(this.error_data, 'waktu_selesai[0]', false) }"
+                            type="time"
+                        />
+                        <label class="invalid-feedback">
+                            {{ get(this.error_data, 'waktu_selesai[0]', '') }}
+                        </label>
+                    </div>
+
+                    <multiselect
+                        id="ruangan_id"
+                        style=""
+                        placeholder="Ruangan"
+                        selectLabel=""
+                        selectedLabel=""
+                        deselectLabel=""
+                        track-by="id"
+                        :custom-label="ruanganLabel"
+                        :options="ruangans"
+                        v-model="ruangan"
+                    >
+                    </multiselect>
 
                 </div>
 
-                <div class="form-group d-flex justify-content-center">
+                <div class="form-group d-flex justify-content-end">
                     <button class="btn btn-primary">
-                        Submit
+                        Tambah
                     </button>
                 </div>
             </form>
@@ -94,7 +179,13 @@
                 m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(kmk => ({
                     ...kmk,
                     picked: false
-                }))
+                })),
+
+                tanggal_mulai: null,
+                tanggal_selesai: null,
+                waktu_mulai: null,
+                waktu_selesai: null,
+                ruangan: null,
             }
         },
 
@@ -115,6 +206,10 @@
 
             kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
                 return `${kelas_mata_kuliah.tipe} (${kelas_mata_kuliah.nama} / ${kelas_mata_kuliah.kode})`;
+            },
+
+            ruanganLabel(ruangan) {
+                return ruangan.nama
             }
         },
 

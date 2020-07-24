@@ -1991,6 +1991,91 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     "ruangans": Array,
@@ -2007,7 +2092,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return _objectSpread({}, kmk, {
           picked: false
         });
-      })
+      }),
+      tanggal_mulai: null,
+      tanggal_selesai: null,
+      waktu_mulai: null,
+      waktu_selesai: null,
+      ruangan: null
     };
   },
   watch: {
@@ -2024,6 +2114,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onFormSubmit: function onFormSubmit() {},
     kelasMataKuliahSelectLabel: function kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
       return "".concat(kelas_mata_kuliah.tipe, " (").concat(kelas_mata_kuliah.nama, " / ").concat(kelas_mata_kuliah.kode, ")");
+    },
+    ruanganLabel: function ruanganLabel(ruangan) {
+      return ruangan.nama;
     }
   },
   computed: {
@@ -64498,7 +64591,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("label", { staticClass: "error" }, [
+              _c("label", { staticClass: "invalid-feedback" }, [
                 _vm._v(
                   "\n                    " +
                     _vm._s(
@@ -64511,46 +64604,269 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("table", { staticClass: "table table-sm table-striped" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.picked_kelas_mata_kuliahs, function(
-                  kelas_mata_kuliah,
-                  index
-                ) {
-                  return _c("tr", [
-                    _c("td", [_vm._v(" " + _vm._s(index + 1))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.nama))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.kode))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.tipe))]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              kelas_mata_kuliah.picked = false
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("table", { staticClass: "table table-sm table-striped" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.picked_kelas_mata_kuliahs, function(
+                    kelas_mata_kuliah,
+                    index
+                  ) {
+                    return _c("tr", [
+                      _c("td", [_vm._v(" " + _vm._s(index + 1))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.nama))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.kode))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(kelas_mata_kuliah.tipe))]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-danger",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                kelas_mata_kuliah.picked = false
+                              }
                             }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-trash" })]
-                      )
+                          },
+                          [_c("i", { staticClass: "fas fa-trash" })]
+                        )
+                      ])
                     ])
-                  ])
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "tanggal_mulai" } }, [
+                  _vm._v(
+                    "\n                        Tanggal Mulai:\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tanggal_mulai,
+                      expression: "tanggal_mulai"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "is-invalid": _vm.get(
+                      this.error_data,
+                      "tanggal_mulai[0]",
+                      false
+                    )
+                  },
+                  attrs: {
+                    id: "tanggal_mulai",
+                    placeholder: "Tanggal Mulai",
+                    type: "date"
+                  },
+                  domProps: { value: _vm.tanggal_mulai },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.tanggal_mulai = $event.target.value
+                    }
+                  }
                 }),
-                0
-              )
-            ])
-          ]),
+                _vm._v(" "),
+                _c("label", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.get(this.error_data, "tanggal_mulai[0]", "")) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "tanggal_selesai" } }, [
+                  _vm._v(
+                    "\n                        Tanggal Selesai:\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tanggal_selesai,
+                      expression: "tanggal_selesai"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "is-invalid": _vm.get(
+                      this.error_data,
+                      "tanggal_selesai[0]",
+                      false
+                    )
+                  },
+                  attrs: {
+                    id: "tanggal_selesai",
+                    placeholder: "Tanggal Selesai",
+                    type: "date"
+                  },
+                  domProps: { value: _vm.tanggal_selesai },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.tanggal_selesai = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(
+                        _vm.get(this.error_data, "tanggal_selesai[0]", "")
+                      ) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "waktu_mulai" } }, [
+                  _vm._v(
+                    "\n                        Waktu Mulai:\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.waktu_mulai,
+                      expression: "waktu_mulai"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "is-invalid": _vm.get(
+                      this.error_data,
+                      "waktu_mulai[0]",
+                      false
+                    )
+                  },
+                  attrs: {
+                    id: "waktu_mulai",
+                    placeholder: "Waktu Mulai",
+                    type: "time"
+                  },
+                  domProps: { value: _vm.waktu_mulai },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.waktu_mulai = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.get(this.error_data, "waktu_mulai[0]", "")) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "waktu_selesai" } }, [
+                  _vm._v(
+                    "\n                        Waktu Selesai:\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.waktu_selesai,
+                      expression: "waktu_selesai"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "is-invalid": _vm.get(
+                      this.error_data,
+                      "waktu_selesai[0]",
+                      false
+                    )
+                  },
+                  attrs: {
+                    id: "waktu_selesai",
+                    placeholder: "Waktu Selesai",
+                    type: "time"
+                  },
+                  domProps: { value: _vm.waktu_selesai },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.waktu_selesai = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.get(this.error_data, "waktu_selesai[0]", "")) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("multiselect", {
+                attrs: {
+                  id: "ruangan_id",
+                  placeholder: "Ruangan",
+                  selectLabel: "",
+                  selectedLabel: "",
+                  deselectLabel: "",
+                  "track-by": "id",
+                  "custom-label": _vm.ruanganLabel,
+                  options: _vm.ruangans
+                },
+                model: {
+                  value: _vm.ruangan,
+                  callback: function($$v) {
+                    _vm.ruangan = $$v
+                  },
+                  expression: "ruangan"
+                }
+              })
+            ],
+            1
+          ),
           _vm._v(" "),
           _vm._m(1)
         ]
@@ -64585,15 +64901,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-group d-flex justify-content-center" },
-      [
-        _c("button", { staticClass: "btn btn-primary" }, [
-          _vm._v("\n                    Submit\n                ")
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "form-group d-flex justify-content-end" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("\n                    Tambah\n                ")
+      ])
+    ])
   }
 ]
 render._withStripped = true
