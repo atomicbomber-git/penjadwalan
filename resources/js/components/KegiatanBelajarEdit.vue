@@ -163,7 +163,7 @@
 
                 <div class="form-group d-flex justify-content-end">
                     <button class="btn btn-primary">
-                        Tambah
+                        Ubah
                     </button>
                 </div>
             </form>
@@ -233,7 +233,10 @@
             },
 
             onFormSubmit() {
-                axios.put(this.submit_url, this.form_data)
+                axios.post(this.submit_url, {
+                    ...this.form_data,
+                    _method: "PUT",
+                })
                     .then(response => {
                         window.location.replace(this.redirect_url)
                     })

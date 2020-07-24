@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -75,6 +76,25 @@ class KegiatanBelajarController extends Controller
             "tahun_ajaran",
             "tipe_semester",
         ));
+    }
+
+    /**
+     * @param int $program_studi_id
+     * @return Builder
+     */
+    private function getKelasKegiatanQuery(): Builder
+    {
+        return KelasMataKuliah::query()
+            ->select(
+                "kegiatan_id",
+                "mata_kuliah_id",
+                "tahun_ajaran_id",
+                "tipe_semester_id",
+                "program_studi.id AS program_studi_id",
+                DB::raw("string_agg(tipe, ',') AS tipe_kelas")
+            )
+            ->leftJoin("program_studi", "program_studi.id", "kelas_mata_kuliah.program_studi_id")
+            ->groupBy("kegiatan_id", "mata_kuliah_id", "tahun_ajaran_id", "tipe_semester_id", "program_studi.id");
     }
 
     /**
@@ -248,7 +268,7 @@ class KegiatanBelajarController extends Controller
      *
      * @param Request $request
      * @param Kegiatan $kegiatan_belajar
-     * @return RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|Response
      */
     public function update(Request $request, Kegiatan $kegiatan_belajar)
     {
@@ -279,6 +299,10 @@ class KegiatanBelajarController extends Controller
             "hari_dalam_minggu" => $data["hari_dalam_minggu"]
         ]);
 
+        $mata_kuliah_id = KelasMataKuliah::query()->where([
+            "kegiatan_id" => $kegiatan_belajar->id
+        ])->value("mata_kuliah_id");
+
         KelasMataKuliah::query()->where([
             "kegiatan_id" => $kegiatan_belajar->id
         ])->delete();
@@ -287,7 +311,7 @@ class KegiatanBelajarController extends Controller
             KelasMataKuliah::query()->create([
                 "kegiatan_id" => $kegiatan_belajar->id,
                 "tipe" => $tipe["name"],
-                "mata_kuliah_id" => $data["mata_kuliah_id"],
+                "mata_kuliah_id" => $mata_kuliah_id,
                 "tipe_semester_id" => $data["tipe_semester_id"],
                 "tahun_ajaran_id" => $data["tahun_ajaran_id"],
                 "program_studi_id" => $data["program_studi_id"],
@@ -296,13 +320,14 @@ class KegiatanBelajarController extends Controller
 
         DB::commit();
 
-        return redirect()->back()
-            ->with("messages", [
-                [
-                    "state" => MessageState::STATE_SUCCESS,
-                    "content" => __("messages.update.success")
-                ]
-            ]);
+        session()->flash("messages", [
+            [
+                "state" => MessageState::STATE_SUCCESS,
+                "content" => __("messages.update.success")
+            ]
+        ]);
+
+        return response('success');
     }
 
     /**
@@ -330,24 +355,5 @@ class KegiatanBelajarController extends Controller
 
         return redirect()->back()
             ->with("messages", $messages);
-    }
-
-    /**
-     * @param int $program_studi_id
-     * @return Builder
-     */
-    private function getKelasKegiatanQuery(): Builder
-    {
-        return KelasMataKuliah::query()
-            ->select(
-                "kegiatan_id",
-                "mata_kuliah_id",
-                "tahun_ajaran_id",
-                "tipe_semester_id",
-                "program_studi.id AS program_studi_id",
-                DB::raw("string_agg(tipe, ',') AS tipe_kelas")
-            )
-            ->leftJoin("program_studi", "program_studi.id", "kelas_mata_kuliah.program_studi_id")
-            ->groupBy("kegiatan_id", "mata_kuliah_id", "tahun_ajaran_id", "tipe_semester_id", "program_studi.id");
     }
 }
