@@ -2,6 +2,7 @@
 
 
 @section("content")
+    @auth
     <nav class="breadcrumb">
         <a class="breadcrumb-item"
            href="{{ \App\Providers\RouteServiceProvider::defaultHomeRoute(auth()->user()) }}">
@@ -11,6 +12,7 @@
             Kegiatan Belajar
         </span>
     </nav>
+    @endauth
 
     <h1 class="feature-title">
         Kegiatan Belajar
@@ -106,9 +108,11 @@
                         <th> Hari</th>
                         <th> W. Mulai - Selesai</th>
                         <th> Ruangan</th>
-                        <th class="text-center">
-                            <i class="fas fa-cog  "></i>
-                        </th>
+                        @auth
+                            <th class="text-center">
+                                <i class="fas fa-cog  "></i>
+                            </th>
+                        @endauth
                     </tr>
                     </thead>
 
@@ -123,33 +127,35 @@
                             </td>
                             <td> {{ ucfirst(\App\Constants\IndonesianDays::getName($kegiatan->hari_dalam_minggu)) }} </td>
                             <td> {{ $kegiatan->waktu_mulai }} - {{ $kegiatan->waktu_selesai }} </td>
-                            <th> {{ $kegiatan->nama_ruangan }} </th>
-                            <td class="d-flex justify-content-center">
-                                <a href="{{ route("kegiatan-belajar.edit", [
+                            <td> {{ $kegiatan->nama_ruangan }} </td>
+                            @auth
+                                <td class="d-flex justify-content-center">
+                                    <a href="{{ route("kegiatan-belajar.edit", [
                                                 "kegiatan_belajar" => $kegiatan->id,
                                                 "tipe_semester_id" => $tipe_semester->id,
                                                 "tahun_ajaran_id" => $tahun_ajaran->id,
                                                 "program_studi_id" => $program_studi->id,
                                                 "page" => request("page") ?? 1,
                                          ]) }}"
-                                   class="btn btn-sm btn-info mr-2">
-                                    Ubah
-                                    <i class="fas fa-pencil-alt  "></i>
-                                </a>
+                                       class="btn btn-sm btn-info mr-2">
+                                        Ubah
+                                        <i class="fas fa-pencil-alt  "></i>
+                                    </a>
 
-                                <form method="POST"
-                                      action="{{ route("kegiatan-belajar.destroy", $kegiatan) }}">
-                                    @method("DELETE")
-                                    @csrf
+                                    <form method="POST"
+                                          action="{{ route("kegiatan-belajar.destroy", $kegiatan) }}">
+                                        @method("DELETE")
+                                        @csrf
 
-                                    <button
-                                        class="btn btn-danger btn-sm ml-2"
-                                    >
-                                        Hapus
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>
+                                        <button
+                                            class="btn btn-danger btn-sm ml-2"
+                                        >
+                                            Hapus
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            @endauth
                         </tr>
                     @endforeach
                     </tbody>
