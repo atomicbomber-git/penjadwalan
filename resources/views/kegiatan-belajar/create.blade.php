@@ -26,7 +26,6 @@
     <kegiatan-belajar-create
         submit_url="{{ route("kegiatan-belajar.store") }}"
         redirect_url="{{ route("kegiatan-belajar.index", request()->query()) }}"
-        :kelas_mata_kuliahs='{{ json_encode($kelas_mata_kuliahs) }}'
         :mata_kuliahs='{{ json_encode($mata_kuliahs) }}'
         :ruangans='{{ json_encode($ruangans) }}'
         :tipe_semester_id="{{ request("tipe_semester_id") }}"

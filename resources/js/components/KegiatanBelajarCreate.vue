@@ -204,7 +204,6 @@
     export default {
         props: {
             "ruangans": Array,
-            "kelas_mata_kuliahs": Array,
             "mata_kuliahs": Array,
             "submit_url": String,
             "redirect_url": String,
@@ -231,28 +230,12 @@
                     }
                 }),
 
-                m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(kmk => ({
-                    ...kmk,
-                    picked: false
-                })),
-
                 tanggal_mulai: null,
                 tanggal_selesai: null,
                 waktu_mulai: null,
                 waktu_selesai: null,
                 ruangan: null,
                 day: 1,
-            }
-        },
-
-        watch: {
-            kelas_mata_kuliah(new_kelas_mata_kuliah) {
-                if (new_kelas_mata_kuliah === null) {
-                    return
-                }
-
-                new_kelas_mata_kuliah.picked = true
-                this.kelas_mata_kuliah = null
             }
         },
 
@@ -281,10 +264,6 @@
                     })
             },
 
-            kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
-                return `${kelas_mata_kuliah.tipe} (${kelas_mata_kuliah.nama} / ${kelas_mata_kuliah.kode})`;
-            },
-
             ruanganLabel(ruangan) {
                 return ruangan.nama
             }
@@ -305,20 +284,6 @@
                     program_studi_id: this.program_studi_id,
                     hari_dalam_minggu: this.day,
                 }
-            },
-
-            kelas_mata_kuliah_options() {
-                if (this.picked_kelas_mata_kuliahs.length === 0) {
-                    return this.m_kelas_mata_kuliahs.filter(kmk => !kmk.picked)
-                }
-
-                return this.m_kelas_mata_kuliahs
-                    .filter(kmk => !kmk.picked)
-                    .filter(kmk => kmk.mata_kuliah_id === this.picked_kelas_mata_kuliahs[0].mata_kuliah_id)
-            },
-
-            picked_kelas_mata_kuliahs() {
-                return this.m_kelas_mata_kuliahs.filter(kmk => kmk.picked)
             },
         }
     }

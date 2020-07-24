@@ -19,110 +19,28 @@
         Ubah Kegiatan Belajar
     </h1>
 
-    @include("layouts._messages")
-
     <div class="card">
         <div class="card-body">
-            <form action="{{ route("kegiatan-belajar.update", $kegiatan_belajar) }}"
-                  method="POST">
-                @csrf
-                @method("PUT")
-
-                <div class="form-group">
-                    <label for="tanggal_mulai"> Tanggal Mulai:</label>
-                    <input
-                        id="tanggal_mulai"
-                        type="date"
-                        placeholder="Tanggal Mulai"
-                        class="form-control @error("tanggal_mulai") is-invalid @enderror"
-                        name="tanggal_mulai"
-                        value="{{ old("tanggal_mulai", $kegiatan_belajar->tanggal_mulai) }}"
-                    />
-                    @error("tanggal_mulai")
-                    <span class="invalid-feedback">
-                        {{ $message }}
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="tanggal_selesai"> Tanggal Selesai:</label>
-                    <input
-                        id="tanggal_selesai"
-                        type="date"
-                        placeholder="Tanggal Selesai"
-                        class="form-control @error("tanggal_selesai") is-invalid @enderror"
-                        name="tanggal_selesai"
-                        value="{{ old("tanggal_selesai", $kegiatan_belajar->tanggal_selesai) }}"
-                    />
-                    @error("tanggal_selesai")
-                    <span class="invalid-feedback">
-                        {{ $message }}
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="waktu_mulai"> Waktu Mulai:</label>
-                    <input
-                        id="waktu_mulai"
-                        type="time"
-                        placeholder="Waktu Mulai"
-                        class="form-control @error("waktu_mulai") is-invalid @enderror"
-                        name="waktu_mulai"
-                        value="{{ old("waktu_mulai", $kegiatan_belajar->waktu_mulai) }}"
-                    />
-                    @error("waktu_mulai")
-                    <span class="invalid-feedback">
-                        {{ $message }}
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="waktu_selesai"> Waktu Selesai:</label>
-                    <input
-                        id="waktu_selesai"
-                        type="time"
-                        placeholder="Waktu Selesai"
-                        class="form-control @error("waktu_selesai") is-invalid @enderror"
-                        name="waktu_selesai"
-                        value="{{ old("waktu_selesai", $kegiatan_belajar->waktu_selesai) }}"
-                    />
-                    @error("waktu_selesai")
-                    <span class="invalid-feedback">
-                        {{ $message }}
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="ruangan_id"> Ruangan:</label>
-                    <select
-                        class="form-control"
-                        name="ruangan_id"
-                        id="ruangan_id">
-                        @foreach($ruangans AS $ruangan)
-                            <option
-                                {{ old("ruangan_id", $kegiatan_belajar->ruangan_id) === $ruangan->id ? "selected" : "" }}
-                                value="{{ $ruangan->id }}">
-                                {{ $ruangan->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error("ruangan_id")
-                    <span class="invalid-feedback">
-                        {{ $message }}
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary">
-                        Ubah
-                    </button>
-                </div>
-            </form>
+            <div class="font-weight-bolder text-uppercase">
+                Tahun Ajaran <span class="text-primary"> {{ $tahun_ajaran->tahun_mulai }} / {{ $tahun_ajaran->tahun_selesai }} </span> <br>
+                Semester <span class="text-primary"> {{ $tipe_semester->nama }} </span> <br>
+                Program Studi <span class="text-primary"> {{ $program_studi->nama }} </span> <br>
+                Mata Kuliah <span class="text-primary"> {{ $kelas_mata_kuliahs->first()->mata_kuliah->nama }} </span> <br>
+            </div>
         </div>
     </div>
+
+    @include("layouts._messages")
+
+    <kegiatan-belajar-edit
+        :kegiatan_belajar='{{ json_encode($kegiatan_belajar) }}'
+        submit_url="{{ route("kegiatan-belajar.update", $kegiatan_belajar->id) }}"
+        redirect_url="{{ route("kegiatan-belajar.edit", $kegiatan_belajar->id) }}"
+        :kelas_mata_kuliahs='{{ json_encode($kelas_mata_kuliahs) }}'
+        :ruangans='{{ json_encode($ruangans) }}'
+        :tipe_semester_id="{{ request("tipe_semester_id") }}"
+        :tahun_ajaran_id="{{ request("tahun_ajaran_id") }}"
+        :program_studi_id="{{ request("program_studi_id") }}"
+        :days='{{ json_encode($days) }}'
+    ></kegiatan-belajar-edit>
 @endsection

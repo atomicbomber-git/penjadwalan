@@ -1918,12 +1918,6 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2127,7 +2121,6 @@ var tipeIdCounter = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     "ruangans": Array,
-    "kelas_mata_kuliahs": Array,
     "mata_kuliahs": Array,
     "submit_url": String,
     "redirect_url": String,
@@ -2153,11 +2146,6 @@ var tipeIdCounter = 0;
           name: _this.days[index]
         };
       }),
-      m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(function (kmk) {
-        return _objectSpread({}, kmk, {
-          picked: false
-        });
-      }),
       tanggal_mulai: null,
       tanggal_selesai: null,
       waktu_mulai: null,
@@ -2165,16 +2153,6 @@ var tipeIdCounter = 0;
       ruangan: null,
       day: 1
     };
-  },
-  watch: {
-    kelas_mata_kuliah: function kelas_mata_kuliah(new_kelas_mata_kuliah) {
-      if (new_kelas_mata_kuliah === null) {
-        return;
-      }
-
-      new_kelas_mata_kuliah.picked = true;
-      this.kelas_mata_kuliah = null;
-    }
   },
   methods: {
     addTipe: function addTipe() {
@@ -2197,9 +2175,6 @@ var tipeIdCounter = 0;
         _this2.error_data = error.response.data;
       });
     },
-    kelasMataKuliahSelectLabel: function kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
-      return "".concat(kelas_mata_kuliah.tipe, " (").concat(kelas_mata_kuliah.nama, " / ").concat(kelas_mata_kuliah.kode, ")");
-    },
     ruanganLabel: function ruanganLabel(ruangan) {
       return ruangan.nama;
     }
@@ -2219,26 +2194,6 @@ var tipeIdCounter = 0;
         program_studi_id: this.program_studi_id,
         hari_dalam_minggu: this.day
       };
-    },
-    kelas_mata_kuliah_options: function kelas_mata_kuliah_options() {
-      var _this3 = this;
-
-      if (this.picked_kelas_mata_kuliahs.length === 0) {
-        return this.m_kelas_mata_kuliahs.filter(function (kmk) {
-          return !kmk.picked;
-        });
-      }
-
-      return this.m_kelas_mata_kuliahs.filter(function (kmk) {
-        return !kmk.picked;
-      }).filter(function (kmk) {
-        return kmk.mata_kuliah_id === _this3.picked_kelas_mata_kuliahs[0].mata_kuliah_id;
-      });
-    },
-    picked_kelas_mata_kuliahs: function picked_kelas_mata_kuliahs() {
-      return this.m_kelas_mata_kuliahs.filter(function (kmk) {
-        return kmk.picked;
-      });
     }
   }
 });
@@ -2254,6 +2209,16 @@ var tipeIdCounter = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 //
 //
 //
@@ -2265,11 +2230,253 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var tipeIdCounter = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    "kegiatan_belajar": Object,
     "ruangans": Array,
-    "mata_kuliahs": Array,
-    "kegiatan_belajar": Object
+    "kelas_mata_kuliahs": Array,
+    "submit_url": String,
+    "redirect_url": String,
+    "tipe_semester_id": Number,
+    "tahun_ajaran_id": Number,
+    "program_studi_id": Number,
+    "days": Object
+  },
+  components: {
+    Multiselect: __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js").Multiselect,
+    datetime: __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js").Datetime
+  },
+  data: function data() {
+    var _this = this;
+
+    return {
+      tipes: this.kelas_mata_kuliahs.map(function (kmk) {
+        return {
+          id: kmk.id,
+          name: kmk.tipe
+        };
+      }),
+      m_days: Object.keys(this.days).map(function (index) {
+        return {
+          id: index,
+          name: _this.days[index]
+        };
+      }),
+      tanggal_mulai: this.kegiatan_belajar.tanggal_mulai,
+      tanggal_selesai: this.kegiatan_belajar.tanggal_selesai,
+      waktu_mulai: this.kegiatan_belajar.waktu_mulai,
+      waktu_selesai: this.kegiatan_belajar.waktu_selesai,
+      ruangan: this.ruangans.find(function (r) {
+        return r.id === _this.kegiatan_belajar.ruangan_id;
+      }),
+      day: this.kegiatan_belajar.pola_perulangan.hari_dalam_minggu
+    };
+  },
+  methods: {
+    addTipe: function addTipe() {
+      this.tipes = [].concat(_toConsumableArray(this.tipes), [{
+        id: ++tipeIdCounter,
+        name: ""
+      }]);
+    },
+    removeTipe: function removeTipe(tipe) {
+      this.tipes = this.tipes.filter(function (t) {
+        return t.id !== tipe.id;
+      });
+    },
+    onFormSubmit: function onFormSubmit() {
+      var _this2 = this;
+
+      axios.put(this.submit_url, this.form_data).then(function (response) {
+        window.location.replace(_this2.redirect_url);
+      })["catch"](function (error) {
+        _this2.error_data = error.response.data;
+      });
+    },
+    ruanganLabel: function ruanganLabel(ruangan) {
+      return ruangan.nama;
+    }
+  },
+  computed: {
+    form_data: function form_data() {
+      return {
+        tipes: this.tipes,
+        tanggal_mulai: this.tanggal_mulai,
+        tanggal_selesai: this.tanggal_selesai,
+        waktu_mulai: moment__WEBPACK_IMPORTED_MODULE_0___default()(moment__WEBPACK_IMPORTED_MODULE_0___default()().format("YYYY-MM-DD") + " " + this.waktu_mulai).format("HH:mm:ss"),
+        waktu_selesai: moment__WEBPACK_IMPORTED_MODULE_0___default()(moment__WEBPACK_IMPORTED_MODULE_0___default()().format("YYYY-MM-DD") + " " + this.waktu_selesai).format("HH:mm:ss"),
+        ruangan_id: this.get(this.ruangan, "id"),
+        tipe_semester_id: this.tipe_semester_id,
+        tahun_ajaran_id: this.tahun_ajaran_id,
+        program_studi_id: this.program_studi_id,
+        hari_dalam_minggu: this.day
+      };
+    }
   }
 });
 
@@ -65124,20 +65331,413 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card my-3" }, [
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.onFormSubmit($event)
+            }
+          }
+        },
+        [
+          _c(
+            "table",
+            { staticClass: "table table-sm table-striped table-bordered" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.tipes, function(tipe, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(" " + _vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("label", { attrs: { for: "tipe_" + index } }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: tipe.name,
+                              expression: "tipe.name"
+                            }
+                          ],
+                          staticClass: "form-control form-control-sm",
+                          class: {
+                            error: _vm.get(
+                              _vm.error_data,
+                              ["errors", "tipes." + index + ".nama", 0],
+                              false
+                            )
+                          },
+                          attrs: { id: "tipe_" + index, placeholder: "Tipe" },
+                          domProps: { value: tipe.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(tipe, "name", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "error" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(
+                              _vm.get(
+                                _vm.error_data,
+                                ["errors", "tipes." + index + ".tipe", 0],
+                                ""
+                              )
+                            ) +
+                            "\n                        "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.removeTipe(tipe)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash " })]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex justify-content-end" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-sm",
+                attrs: { type: "button" },
+                on: { click: _vm.addTipe }
+              },
+              [
+                _vm._v(
+                  "\n                    Tambah Tipe Kelas\n                "
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "hari_dalam_minggu" } }, [
+              _vm._v(
+                "\n                    Hari dalam Minggu:\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model.number",
+                    value: _vm.day,
+                    expression: "day",
+                    modifiers: { number: true }
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { name: "hari_dalam_minggu", id: "hari_dalam_minggu" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return _vm._n(val)
+                      })
+                    _vm.day = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              _vm._l(_vm.m_days, function(day, index) {
+                return _c(
+                  "option",
+                  { key: index, domProps: { value: day.id } },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(day.name) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "tanggal_mulai" } }, [
+              _vm._v("\n                    Tanggal Mulai:\n                ")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tanggal_mulai,
+                  expression: "tanggal_mulai"
+                }
+              ],
+              staticClass: "form-control",
+              class: {
+                "is-invalid": _vm.get(
+                  this.error_data,
+                  "tanggal_mulai[0]",
+                  false
+                )
+              },
+              attrs: {
+                id: "tanggal_mulai",
+                placeholder: "Tanggal Mulai",
+                type: "date"
+              },
+              domProps: { value: _vm.tanggal_mulai },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.tanggal_mulai = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.get(this.error_data, "tanggal_mulai[0]", "")) +
+                  "\n                "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "tanggal_selesai" } }, [
+              _vm._v("\n                    Tanggal Selesai:\n                ")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tanggal_selesai,
+                  expression: "tanggal_selesai"
+                }
+              ],
+              staticClass: "form-control",
+              class: {
+                "is-invalid": _vm.get(
+                  this.error_data,
+                  "tanggal_selesai[0]",
+                  false
+                )
+              },
+              attrs: {
+                id: "tanggal_selesai",
+                placeholder: "Tanggal Selesai",
+                type: "date"
+              },
+              domProps: { value: _vm.tanggal_selesai },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.tanggal_selesai = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.get(this.error_data, "tanggal_selesai[0]", "")) +
+                  "\n                "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "waktu_mulai" } }, [
+              _vm._v("\n                    Waktu Mulai:\n                ")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.waktu_mulai,
+                  expression: "waktu_mulai"
+                }
+              ],
+              staticClass: "form-control",
+              class: {
+                "is-invalid": _vm.get(this.error_data, "waktu_mulai[0]", false)
+              },
+              attrs: {
+                id: "waktu_mulai",
+                placeholder: "Waktu Mulai",
+                type: "time"
+              },
+              domProps: { value: _vm.waktu_mulai },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.waktu_mulai = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.get(this.error_data, "waktu_mulai[0]", "")) +
+                  "\n                "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "waktu_selesai" } }, [
+              _vm._v("\n                    Waktu Selesai:\n                ")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.waktu_selesai,
+                  expression: "waktu_selesai"
+                }
+              ],
+              staticClass: "form-control",
+              class: {
+                "is-invalid": _vm.get(
+                  this.error_data,
+                  "waktu_selesai[0]",
+                  false
+                )
+              },
+              attrs: {
+                id: "waktu_selesai",
+                placeholder: "Waktu Selesai",
+                type: "time"
+              },
+              domProps: { value: _vm.waktu_selesai },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.waktu_selesai = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.get(this.error_data, "waktu_selesai[0]", "")) +
+                  "\n                "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", { attrs: { for: "ruangan_id" } }, [
+                _vm._v("\n                    Ruangan:\n                ")
+              ]),
+              _vm._v(" "),
+              _c("multiselect", {
+                attrs: {
+                  id: "ruangan_id",
+                  placeholder: "Ruangan",
+                  selectLabel: "",
+                  selectedLabel: "",
+                  deselectLabel: "",
+                  "track-by": "id",
+                  "custom-label": _vm.ruanganLabel,
+                  options: _vm.ruangans
+                },
+                model: {
+                  value: _vm.ruangan,
+                  callback: function($$v) {
+                    _vm.ruangan = $$v
+                  },
+                  expression: "ruangan"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card my-3" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _vm._v(
-            "\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium dolore dolorem, doloremque excepturi fugit illum, magnam maiores possimus quaerat rerum sit, tenetur. Doloremque doloribus fugit nobis odio quisquam quos soluta.\n        "
-          )
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("td", [_vm._v(" #")]),
+        _vm._v(" "),
+        _c("td", [_vm._v(" Tipe Kelas")]),
+        _vm._v(" "),
+        _c("td", { staticClass: "text-center" }, [_vm._v(" Kendali")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group d-flex justify-content-end" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("\n                    Tambah\n                ")
       ])
     ])
   }
@@ -77887,10 +78487,10 @@ var regionDayMap = {
 /*!*********************************************!*\
   !*** ./node_modules/weekstart/package.json ***!
   \*********************************************/
-/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
+/*! exports provided: _args, _development, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_from\":\"weekstart\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"tag\",\"registry\":true,\"raw\":\"weekstart\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"\",\"saveSpec\":null,\"fetchSpec\":\"latest\"},\"_requiredBy\":[\"#DEV:/\",\"#USER\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_shasum\":\"950970b48e5797e06fc1a762f3d0f013312321e1\",\"_spec\":\"weekstart\",\"_where\":\"/home/vagrant/penjadwalan\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"bundleDependencies\":false,\"deprecated\":false,\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
+module.exports = JSON.parse("{\"_args\":[[\"weekstart@1.0.1\",\"/home/atomicbomber/projects/penjadwalan\"]],\"_development\":true,\"_from\":\"weekstart@1.0.1\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"weekstart@1.0.1\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"1.0.1\",\"saveSpec\":null,\"fetchSpec\":\"1.0.1\"},\"_requiredBy\":[\"#DEV:/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_spec\":\"1.0.1\",\"_where\":\"/home/atomicbomber/projects/penjadwalan\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
 
 /***/ }),
 

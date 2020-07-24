@@ -94,16 +94,6 @@ class KegiatanBelajarController extends Controller
         $tipe_semester = TipeSemester::find($data["tipe_semester_id"]);
         $program_studi = ProgramStudi::find($data["program_studi_id"]);
 
-        $kelas_mata_kuliahs = KelasMataKuliah::query()
-            ->where([
-                "kelas_mata_kuliah.tahun_ajaran_id" => $data["tahun_ajaran_id"],
-                "kelas_mata_kuliah.tipe_semester_id" => $data["tipe_semester_id"],
-                "kelas_mata_kuliah.program_studi_id" => $data["program_studi_id"],
-            ])
-            ->leftJoin("mata_kuliah", "mata_kuliah.id", "kelas_mata_kuliah.mata_kuliah_id")
-            ->orderByRaw("mata_kuliah.nama, kelas_mata_kuliah.tipe")
-            ->get();
-
         $mata_kuliahs = MataKuliah::query()
             ->when($tipe_semester->nama == "GASAL", function (Builder $builder) {
                 $builder->whereRaw("semester % 2 = 1");
@@ -126,7 +116,6 @@ class KegiatanBelajarController extends Controller
         $days = LocalDayNames::get();
 
         return response()->view("kegiatan-belajar.create", compact(
-            "kelas_mata_kuliahs",
             "tahun_ajaran",
             "tipe_semester",
             "program_studi",
@@ -217,13 +206,40 @@ class KegiatanBelajarController extends Controller
      */
     public function edit(Kegiatan $kegiatan_belajar, Request $request)
     {
+        $kegiatan_belajar->load([
+            "pola_perulangan"
+        ]);
+
+        $data = $request->validate([
+            "tahun_ajaran_id" => "required|exists:tahun_ajaran,id",
+            "tipe_semester_id" => "required|exists:tipe_semester,id",
+            "program_studi_id" => "required|exists:program_studi,id",
+        ]);
+
+        $tahun_ajaran = TahunAjaran::find($data["tahun_ajaran_id"]);
+        $tipe_semester = TipeSemester::find($data["tipe_semester_id"]);
+        $program_studi = ProgramStudi::find($data["program_studi_id"]);
+
+        $kelas_mata_kuliahs = KelasMataKuliah::query()
+            ->where([
+                "kegiatan_id" => $kegiatan_belajar->id
+            ])
+            ->get();
+
         $ruangans = Ruangan::query()
             ->orderBy("nama")
             ->get();
 
+        $days = LocalDayNames::get();
+
         return response()->view("kegiatan-belajar.edit", compact(
             "kegiatan_belajar",
-            "ruangans"
+            "tahun_ajaran",
+            "tipe_semester",
+            "program_studi",
+            "ruangans",
+            "days",
+            "kelas_mata_kuliahs"
         ));
     }
 
@@ -237,14 +253,48 @@ class KegiatanBelajarController extends Controller
     public function update(Request $request, Kegiatan $kegiatan_belajar)
     {
         $data = $request->validate([
+            "tipes.*.name" => ["required"],
             "tanggal_mulai" => ["required", "date_format:Y-m-d"],
             "tanggal_selesai" => ["required", "date_format:Y-m-d"],
             "waktu_mulai" => ["required", "date_format:H:i:s"],
             "waktu_selesai" => ["required", "date_format:H:i:s"],
             "ruangan_id" => ["required", Rule::exists(Ruangan::class, "id")],
+            "tipe_semester_id" => ["required"],
+            "tahun_ajaran_id" => ["required"],
+            "program_studi_id" => ["required"],
+            "hari_dalam_minggu" => ["required"],
         ]);
 
-        $kegiatan_belajar->update($data);
+        DB::beginTransaction();
+
+        $kegiatan_belajar->update(Arr::only($data, [
+            "tanggal_mulai",
+            "tanggal_selesai",
+            "waktu_mulai",
+            "waktu_selesai",
+            "ruangan_id",
+        ]));
+
+        $kegiatan_belajar->pola_perulangan->update([
+            "hari_dalam_minggu" => $data["hari_dalam_minggu"]
+        ]);
+
+        KelasMataKuliah::query()->where([
+            "kegiatan_id" => $kegiatan_belajar->id
+        ])->delete();
+
+        foreach ($data["tipes"] as $tipe) {
+            KelasMataKuliah::query()->create([
+                "kegiatan_id" => $kegiatan_belajar->id,
+                "tipe" => $tipe["name"],
+                "mata_kuliah_id" => $data["mata_kuliah_id"],
+                "tipe_semester_id" => $data["tipe_semester_id"],
+                "tahun_ajaran_id" => $data["tahun_ajaran_id"],
+                "program_studi_id" => $data["program_studi_id"],
+            ]);
+        }
+
+        DB::commit();
 
         return redirect()->back()
             ->with("messages", [
