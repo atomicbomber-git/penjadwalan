@@ -2099,6 +2099,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var tipeIdCounter = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2110,17 +2133,26 @@ var tipeIdCounter = 0;
     "redirect_url": String,
     "tipe_semester_id": Number,
     "tahun_ajaran_id": Number,
-    "program_studi_id": Number
+    "program_studi_id": Number,
+    "days": Object
   },
   components: {
     Multiselect: __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js").Multiselect,
     datetime: __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js").Datetime
   },
   data: function data() {
+    var _this = this;
+
     return {
       kelas_mata_kuliah: null,
       mata_kuliah: null,
       tipes: [],
+      m_days: Object.keys(this.days).map(function (index) {
+        return {
+          id: index,
+          name: _this.days[index]
+        };
+      }),
       m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(function (kmk) {
         return _objectSpread({}, kmk, {
           picked: false
@@ -2130,7 +2162,8 @@ var tipeIdCounter = 0;
       tanggal_selesai: null,
       waktu_mulai: null,
       waktu_selesai: null,
-      ruangan: null
+      ruangan: null,
+      day: 1
     };
   },
   watch: {
@@ -2156,12 +2189,12 @@ var tipeIdCounter = 0;
       });
     },
     onFormSubmit: function onFormSubmit() {
-      var _this = this;
+      var _this2 = this;
 
       axios.post(this.submit_url, this.form_data).then(function (response) {
-        window.location.replace(_this.redirect_url);
+        window.location.replace(_this2.redirect_url);
       })["catch"](function (error) {
-        _this.error_data = error.response.data;
+        _this2.error_data = error.response.data;
       });
     },
     kelasMataKuliahSelectLabel: function kelasMataKuliahSelectLabel(kelas_mata_kuliah) {
@@ -2183,11 +2216,12 @@ var tipeIdCounter = 0;
         ruangan_id: this.get(this.ruangan, "id"),
         tipe_semester_id: this.tipe_semester_id,
         tahun_ajaran_id: this.tahun_ajaran_id,
-        program_studi_id: this.program_studi_id
+        program_studi_id: this.program_studi_id,
+        hari_dalam_minggu: this.day
       };
     },
     kelas_mata_kuliah_options: function kelas_mata_kuliah_options() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.picked_kelas_mata_kuliahs.length === 0) {
         return this.m_kelas_mata_kuliahs.filter(function (kmk) {
@@ -2198,7 +2232,7 @@ var tipeIdCounter = 0;
       return this.m_kelas_mata_kuliahs.filter(function (kmk) {
         return !kmk.picked;
       }).filter(function (kmk) {
-        return kmk.mata_kuliah_id === _this2.picked_kelas_mata_kuliahs[0].mata_kuliah_id;
+        return kmk.mata_kuliah_id === _this3.picked_kelas_mata_kuliahs[0].mata_kuliah_id;
       });
     },
     picked_kelas_mata_kuliahs: function picked_kelas_mata_kuliahs() {
@@ -64769,6 +64803,60 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "hari_dalam_minggu" } }, [
+              _vm._v(
+                "\n                    Hari dalam Minggu:\n                "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model.number",
+                    value: _vm.day,
+                    expression: "day",
+                    modifiers: { number: true }
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { name: "hari_dalam_minggu", id: "hari_dalam_minggu" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return _vm._n(val)
+                      })
+                    _vm.day = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              _vm._l(_vm.m_days, function(day, index) {
+                return _c(
+                  "option",
+                  { key: index, domProps: { value: day.id } },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(day.name) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "tanggal_mulai" } }, [
               _vm._v("\n                    Tanggal Mulai:\n                ")
             ]),
@@ -64996,11 +65084,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("td", [_vm._v(" # ")]),
+        _c("td", [_vm._v(" #")]),
         _vm._v(" "),
-        _c("td", [_vm._v(" Tipe Kelas ")]),
+        _c("td", [_vm._v(" Tipe Kelas")]),
         _vm._v(" "),
-        _c("td", { staticClass: "text-center" }, [_vm._v(" Kendali ")])
+        _c("td", { staticClass: "text-center" }, [_vm._v(" Kendali")])
       ])
     ])
   },

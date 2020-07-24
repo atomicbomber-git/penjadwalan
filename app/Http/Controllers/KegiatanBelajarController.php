@@ -6,8 +6,10 @@ use App\Constants\MessageState;
 use App\Kegiatan;
 use App\KelasMataKuliah;
 use App\MataKuliah;
+use App\PolaPerulangan;
 use App\ProgramStudi;
 use App\Ruangan;
+use App\Support\LocalDayNames;
 use App\TahunAjaran;
 use App\TipeSemester;
 use Exception;
@@ -121,13 +123,16 @@ class KegiatanBelajarController extends Controller
             ->orderBy("nama")
             ->get();
 
+        $days = LocalDayNames::get();
+
         return response()->view("kegiatan-belajar.create", compact(
             "kelas_mata_kuliahs",
             "tahun_ajaran",
             "tipe_semester",
             "program_studi",
             "ruangans",
-            "mata_kuliahs"
+            "mata_kuliahs",
+            "days"
         ));
     }
 
@@ -150,6 +155,7 @@ class KegiatanBelajarController extends Controller
             "tipe_semester_id" => ["required"],
             "tahun_ajaran_id" => ["required"],
             "program_studi_id" => ["required"],
+            "hari_dalam_minggu" => ["required"],
         ]);
 
         DB::beginTransaction();
@@ -161,8 +167,14 @@ class KegiatanBelajarController extends Controller
             "waktu_selesai",
             "ruangan_id",
         ]), [
-            "berulang" => 0,
+            "berulang" => 1,
         ]));
+
+        PolaPerulangan::query()->create([
+            "kegiatan_id" => $kegiatan->id,
+            "interval_perulangan" => 1,
+            "hari_dalam_minggu" => $data["hari_dalam_minggu"]
+        ]);
 
         foreach ($data["tipes"] as $tipe) {
             KelasMataKuliah::query()->create([
@@ -174,6 +186,13 @@ class KegiatanBelajarController extends Controller
                 "program_studi_id" => $data["program_studi_id"],
             ]);
         }
+
+        session()->flash("messages", [
+            [
+                "state" => MessageState::STATE_SUCCESS,
+                "content" => __("messages.create.success")
+            ]
+        ]);
 
         DB::commit();
     }

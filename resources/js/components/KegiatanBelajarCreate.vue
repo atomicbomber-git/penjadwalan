@@ -29,9 +29,9 @@
                 <table class="table table-sm table-striped table-bordered">
                     <thead>
                     <tr>
-                        <td> # </td>
-                        <td> Tipe Kelas </td>
-                        <td class="text-center"> Kendali </td>
+                        <td> #</td>
+                        <td> Tipe Kelas</td>
+                        <td class="text-center"> Kendali</td>
                     </tr>
                     </thead>
 
@@ -55,7 +55,9 @@
                             </label>
                         </td>
                         <td class="text-center">
-                            <button @click="removeTipe(tipe)" type="button" class="btn btn-danger btn-sm">
+                            <button @click="removeTipe(tipe)"
+                                    type="button"
+                                    class="btn btn-danger btn-sm">
                                 <i class="fas fa-trash "></i>
                             </button>
                         </td>
@@ -64,10 +66,31 @@
                 </table>
 
                 <div class="d-flex justify-content-end">
-                    <button type="button" @click="addTipe"
+                    <button type="button"
+                            @click="addTipe"
                             class="btn btn-primary btn-sm">
                         Tambah Tipe Kelas
                     </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="hari_dalam_minggu">
+                        Hari dalam Minggu:
+                    </label>
+
+                    <select
+                        class="form-control"
+                        name="hari_dalam_minggu"
+                        id="hari_dalam_minggu"
+                        v-model.number="day"
+                    >
+                        <option
+                            v-for="(day, index) in m_days"
+                            :key="index"
+                            :value="day.id">
+                            {{ day.name }}
+                        </option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -175,6 +198,7 @@
 
 <script>
     import moment from "moment"
+
     let tipeIdCounter = 0
 
     export default {
@@ -187,6 +211,7 @@
             "tipe_semester_id": Number,
             "tahun_ajaran_id": Number,
             "program_studi_id": Number,
+            "days": Object,
         },
 
         components: {
@@ -199,6 +224,12 @@
                 kelas_mata_kuliah: null,
                 mata_kuliah: null,
                 tipes: [],
+                m_days: Object.keys(this.days).map(index => {
+                    return {
+                        id: index,
+                        name: this.days[index],
+                    }
+                }),
 
                 m_kelas_mata_kuliahs: this.kelas_mata_kuliahs.map(kmk => ({
                     ...kmk,
@@ -210,6 +241,7 @@
                 waktu_mulai: null,
                 waktu_selesai: null,
                 ruangan: null,
+                day: 1,
             }
         },
 
@@ -271,6 +303,7 @@
                     tipe_semester_id: this.tipe_semester_id,
                     tahun_ajaran_id: this.tahun_ajaran_id,
                     program_studi_id: this.program_studi_id,
+                    hari_dalam_minggu: this.day,
                 }
             },
 

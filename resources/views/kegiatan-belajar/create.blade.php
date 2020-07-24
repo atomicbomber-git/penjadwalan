@@ -32,5 +32,6 @@
         :tipe_semester_id="{{ request("tipe_semester_id") }}"
         :tahun_ajaran_id="{{ request("tahun_ajaran_id") }}"
         :program_studi_id="{{ request("program_studi_id") }}"
+        :days='{{ json_encode($days) }}'
     ></kegiatan-belajar-create>
 @endsection
