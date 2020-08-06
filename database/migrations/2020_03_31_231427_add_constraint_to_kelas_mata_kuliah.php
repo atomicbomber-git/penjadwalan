@@ -14,26 +14,26 @@ class AddConstraintToKelasMataKuliah extends Migration
      */
     public function up()
     {
-        DB::statement("
-            ALTER TABLE kelas_mata_kuliah
-                ADD CONSTRAINT k_id_mk_id
-                EXCLUDE USING gist (
-                    kegiatan_id WITH =,
-                    mata_kuliah_id WITH <>
-                ),
-
-                ADD CONSTRAINT k_id_ts_id
-                EXCLUDE USING gist (
-                    kegiatan_id WITH =,
-                    tipe_semester_id WITH <>
-                ),
-
-                ADD CONSTRAINT k_id_ta_id
-                EXCLUDE USING gist (
-                    kegiatan_id WITH =,
-                    tahun_ajaran_id WITH <>
-                )
-        ");
+//        DB::statement("
+//            ALTER TABLE kelas_mata_kuliah
+//                ADD CONSTRAINT k_id_mk_id
+//                EXCLUDE USING gist (
+//                    kegiatan_id WITH =,
+//                    mata_kuliah_id WITH <>
+//                ),
+//
+//                ADD CONSTRAINT k_id_ts_id
+//                EXCLUDE USING gist (
+//                    kegiatan_id WITH =,
+//                    tipe_semester_id WITH <>
+//                ),
+//
+//                ADD CONSTRAINT k_id_ta_id
+//                EXCLUDE USING gist (
+//                    kegiatan_id WITH =,
+//                    tahun_ajaran_id WITH <>
+//                )
+//        ");
 
     }
 
