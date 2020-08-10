@@ -62,7 +62,7 @@
                     >
                         @foreach($program_studis AS $program_studi_loop_item)
                             <option value="{{ $program_studi_loop_item->id }}" {{ $program_studi_loop_item->id == old("program_studi_id", $program_studi->id) ? "selected" : ""}}>
-                                {{ $program_studi->nama }}
+                                {{ $program_studi_loop_item->nama }}
                             </option>
                         @endforeach
                     </select>
