@@ -13,6 +13,5 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminUserSeeder::class);
         $this->call(ExcelDataSeeder::class);
-        $this->call(SeminarSeeder::class);
     }
 }
