@@ -87,20 +87,12 @@ class PenggunaanRuanganController extends Controller
             ->selectRaw("LOWER(rentang_waktu) AS waktu_mulai")
             ->selectRaw("UPPER(rentang_waktu) AS waktu_selesai")
             ->selectRaw("ruangan.nama AS nama_ruangan")
-            ->selectRaw("
-                CASE
-                    WHEN seminar.id IS NOT NULL THEN
-                        json_build_object('id', seminar.id, 'nama', seminar.nama)
-                    ELSE NULL
-                END AS seminar
-                ")
             ->selectRaw("kegiatan_kelas")
             ->selectRaw("mata_kuliah")
             ->leftJoin("kegiatan", "kegiatan.id", "jadwal.kegiatan_id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kegiatan.mata_kuliah_id")
             ->leftJoin("ruangan", "ruangan.id", "kegiatan.ruangan_id")
             ->leftJoinSub($this->getKegiatanKelasQuery(), "kegiatan_kelas", "kegiatan_kelas.kegiatan_id", "kegiatan.id")
-            ->leftJoin("seminar", "seminar.kegiatan_id", "kegiatan.id")
             ->where("ruangan.id", $filter_ruangan_id)
             ->whereRaw("LOWER(rentang_waktu) >= ?", [$filter_waktu_mulai])
             ->whereRaw("UPPER(rentang_waktu) <= ?", [$filter_waktu_selesai])
@@ -108,7 +100,6 @@ class PenggunaanRuanganController extends Controller
             ->withCasts([
                 "kegiatan_kelas" => JsonCast::class,
                 "mata_kuliah" => JsonCast::class,
-                "seminar" => JsonCast::class,
             ])
             ->paginate();
     }
