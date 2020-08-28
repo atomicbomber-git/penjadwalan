@@ -18,7 +18,6 @@ class CreateTahunAjaranTable extends Migration
             $table->unsignedInteger('tahun_mulai');
             $table->unsignedInteger('tahun_selesai');
             $table->unique(["tahun_mulai", "tahun_selesai"]);
-
             $table->timestamps();
         });
     }
