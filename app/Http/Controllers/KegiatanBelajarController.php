@@ -13,6 +13,8 @@ use App\Support\LocalDayNames;
 use App\TahunAjaran;
 use App\TipeSemester;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +22,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -268,7 +269,7 @@ class KegiatanBelajarController extends Controller
      *
      * @param Request $request
      * @param Kegiatan $kegiatan_belajar
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|Response
+     * @return Application|ResponseFactory|Response
      */
     public function update(Request $request, Kegiatan $kegiatan_belajar)
     {
