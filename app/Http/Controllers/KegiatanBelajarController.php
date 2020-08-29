@@ -38,9 +38,9 @@ class KegiatanBelajarController extends Controller
         $tahun_ajarans = TahunAjaran::query()->orderByDesc("tahun_mulai")->get()->keyBy("id");
         $tipe_semesters = TipeSemester::query()->orderBy("nama")->get()->keyBy("id");
 
-        $program_studi = $program_studis->find($request->get("program_studi_id")) ?? new ProgramStudi();
-        $tahun_ajaran = $tahun_ajarans->find($request->get("tahun_ajaran_id")) ?? new TahunAjaran();
-        $tipe_semester = $tipe_semesters->find($request->get("tipe_semester_id")) ?? new TipeSemester();
+        $program_studi = $program_studis->find($request->get("program_studi_id")) ?? ($program_studis->first() ?? new ProgramStudi);
+        $tahun_ajaran = $tahun_ajarans->find($request->get("tahun_ajaran_id")) ?? ($tahun_ajarans->first() ?? new TahunAjaran);
+        $tipe_semester = $tipe_semesters->find($request->get("tipe_semester_id")) ?? ($tipe_semesters->first() ?? new TipeSemester);
 
         $kegiatans = Kegiatan::query()
             ->select(
@@ -62,19 +62,9 @@ class KegiatanBelajarController extends Controller
                 $this->getKelasKegiatanQuery()
                 , "kelas_mata_kuliah", "kelas_mata_kuliah.kegiatan_id", "kegiatan.id")
             ->leftJoin("mata_kuliah", "mata_kuliah.id", "kelas_mata_kuliah.mata_kuliah_id")
-            ->when(true, function (Builder $builder) use ($tahun_ajaran, $tipe_semester, $program_studi) {
-                if (isset($tahun_ajaran->id)) {
-                    $builder->where("kelas_mata_kuliah.tahun_ajaran_id", "=", $tahun_ajaran->id);
-                }
-
-                if (isset($tipe_semester->id)) {
-                    $builder->where("kelas_mata_kuliah.tahun_ajaran_id", "=", $tipe_semester->id);
-                }
-
-                if (isset($program_studi->id)) {
-                    $builder->where("kelas_mata_kuliah.tahun_ajaran_id", "=", $program_studi->id);
-                }
-            })
+            ->where("kelas_mata_kuliah.tahun_ajaran_id", "=", $tahun_ajaran->id)
+            ->where("kelas_mata_kuliah.tipe_semester_id", "=", $tipe_semester->id)
+            ->where("kelas_mata_kuliah.program_studi_id", "=", $program_studi->id)
             ->paginate();
 
         return view("kegiatan-belajar.index", compact(
