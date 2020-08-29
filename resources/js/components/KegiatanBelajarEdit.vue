@@ -162,7 +162,7 @@
                 </div>
 
                 <div class="form-group d-flex justify-content-end">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary cypress-submit-button">
                         Ubah
                     </button>
                 </div>

@@ -3,10 +3,6 @@
 namespace App\Providers;
 
 use App\Support\ExtendedPostgresGrammar;
-use Barryvdh\Debugbar\LaravelDebugbar;
-use DebugBar\DebugBar;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 

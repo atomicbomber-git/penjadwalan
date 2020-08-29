@@ -2116,6 +2116,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var tipeIdCounter = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -64876,49 +64886,51 @@ var render = function() {
           }
         },
         [
-          _c(
-            "div",
-            { staticClass: "form-group" },
-            [
-              _c("label", { attrs: { for: "mata_kuliah_id" } }, [
-                _vm._v("\n                    Mata Kuliah:\n                ")
-              ]),
-              _vm._v(" "),
-              _c("multiselect", {
-                attrs: {
-                  id: "mata_kuliah_id",
-                  placeholder: "Mata Kuliah",
-                  selectLabel: "",
-                  selectedLabel: "",
-                  deselectLabel: "",
-                  "track-by": "id",
-                  "custom-label": function(ref) {
-                    var nama = ref.nama
-                    var kode = ref.kode
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "mata_kuliah_id" } }, [
+              _vm._v("\n          Mata Kuliah:\n        ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { attrs: { id: "mata_kuliah_id_container" } },
+              [
+                _c("multiselect", {
+                  attrs: {
+                    id: "mata_kuliah_id",
+                    "custom-label": function(ref) {
+                      var nama = ref.nama
+                      var kode = ref.kode
 
-                    return nama + " (" + kode + ")"
+                      return nama + " (" + kode + ")"
+                    },
+                    options: _vm.mata_kuliahs,
+                    deselectLabel: "",
+                    placeholder: "Mata Kuliah",
+                    selectLabel: "",
+                    selectedLabel: "",
+                    "track-by": "id"
                   },
-                  options: _vm.mata_kuliahs
-                },
-                model: {
-                  value: _vm.mata_kuliah,
-                  callback: function($$v) {
-                    _vm.mata_kuliah = $$v
-                  },
-                  expression: "mata_kuliah"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { staticClass: "invalid-feedback" }, [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(_vm.get(this.error_data, "mata_kuliah_id[0]", "")) +
-                    "\n                "
-                )
-              ])
-            ],
-            1
-          ),
+                  model: {
+                    value: _vm.mata_kuliah,
+                    callback: function($$v) {
+                      _vm.mata_kuliah = $$v
+                    },
+                    expression: "mata_kuliah"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("label", { staticClass: "invalid-feedback" }, [
+              _vm._v(
+                "\n          " +
+                  _vm._s(_vm.get(this.error_data, "mata_kuliah_id[0]", "")) +
+                  "\n        "
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "table",
@@ -64966,7 +64978,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("label", { staticClass: "error" }, [
                         _vm._v(
-                          "\n                            " +
+                          "\n              " +
                             _vm._s(
                               _vm.get(
                                 _vm.error_data,
@@ -64974,7 +64986,7 @@ var render = function() {
                                 ""
                               )
                             ) +
-                            "\n                        "
+                            "\n            "
                         )
                       ])
                     ]),
@@ -65005,23 +65017,17 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary btn-sm",
+                staticClass: "btn btn-primary btn-sm cypress-add-tipe-kelas",
                 attrs: { type: "button" },
                 on: { click: _vm.addTipe }
               },
-              [
-                _vm._v(
-                  "\n                    Tambah Tipe Kelas\n                "
-                )
-              ]
+              [_vm._v("\n          Tambah Tipe Kelas\n        ")]
             )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "hari_dalam_minggu" } }, [
-              _vm._v(
-                "\n                    Hari dalam Minggu:\n                "
-              )
+              _vm._v("\n          Hari dalam Minggu:\n        ")
             ]),
             _vm._v(" "),
             _c(
@@ -65037,7 +65043,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { name: "hari_dalam_minggu", id: "hari_dalam_minggu" },
+                attrs: { id: "hari_dalam_minggu", name: "hari_dalam_minggu" },
                 on: {
                   change: function($event) {
                     var $$selectedVal = Array.prototype.filter
@@ -65058,13 +65064,7 @@ var render = function() {
                 return _c(
                   "option",
                   { key: index, domProps: { value: day.id } },
-                  [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(day.name) +
-                        "\n                    "
-                    )
-                  ]
+                  [_vm._v("\n            " + _vm._s(day.name) + "\n          ")]
                 )
               }),
               0
@@ -65073,7 +65073,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "tanggal_mulai" } }, [
-              _vm._v("\n                    Tanggal Mulai:\n                ")
+              _vm._v("\n          Tanggal Mulai:\n        ")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -65111,16 +65111,16 @@ var render = function() {
             _vm._v(" "),
             _c("label", { staticClass: "invalid-feedback" }, [
               _vm._v(
-                "\n                    " +
+                "\n          " +
                   _vm._s(_vm.get(this.error_data, "tanggal_mulai[0]", "")) +
-                  "\n                "
+                  "\n        "
               )
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "tanggal_selesai" } }, [
-              _vm._v("\n                    Tanggal Selesai:\n                ")
+              _vm._v("\n          Tanggal Selesai:\n        ")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -65158,16 +65158,16 @@ var render = function() {
             _vm._v(" "),
             _c("label", { staticClass: "invalid-feedback" }, [
               _vm._v(
-                "\n                    " +
+                "\n          " +
                   _vm._s(_vm.get(this.error_data, "tanggal_selesai[0]", "")) +
-                  "\n                "
+                  "\n        "
               )
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "waktu_mulai" } }, [
-              _vm._v("\n                    Waktu Mulai:\n                ")
+              _vm._v("\n          Waktu Mulai:\n        ")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -65201,16 +65201,16 @@ var render = function() {
             _vm._v(" "),
             _c("label", { staticClass: "invalid-feedback" }, [
               _vm._v(
-                "\n                    " +
+                "\n          " +
                   _vm._s(_vm.get(this.error_data, "waktu_mulai[0]", "")) +
-                  "\n                "
+                  "\n        "
               )
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "waktu_selesai" } }, [
-              _vm._v("\n                    Waktu Selesai:\n                ")
+              _vm._v("\n          Waktu Selesai:\n        ")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -65248,43 +65248,45 @@ var render = function() {
             _vm._v(" "),
             _c("label", { staticClass: "invalid-feedback" }, [
               _vm._v(
-                "\n                    " +
+                "\n          " +
                   _vm._s(_vm.get(this.error_data, "waktu_selesai[0]", "")) +
-                  "\n                "
+                  "\n        "
               )
             ])
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form-group" },
-            [
-              _c("label", { attrs: { for: "ruangan_id" } }, [
-                _vm._v("\n                    Ruangan:\n                ")
-              ]),
-              _vm._v(" "),
-              _c("multiselect", {
-                attrs: {
-                  id: "ruangan_id",
-                  placeholder: "Ruangan",
-                  selectLabel: "",
-                  selectedLabel: "",
-                  deselectLabel: "",
-                  "track-by": "id",
-                  "custom-label": _vm.ruanganLabel,
-                  options: _vm.ruangans
-                },
-                model: {
-                  value: _vm.ruangan,
-                  callback: function($$v) {
-                    _vm.ruangan = $$v
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "ruangan_id" } }, [
+              _vm._v("\n          Ruangan:\n        ")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "cypress-ruangan-id-container" },
+              [
+                _c("multiselect", {
+                  attrs: {
+                    id: "ruangan_id",
+                    "custom-label": _vm.ruanganLabel,
+                    options: _vm.ruangans,
+                    deselectLabel: "",
+                    placeholder: "Ruangan",
+                    selectLabel: "",
+                    selectedLabel: "",
+                    "track-by": "id"
                   },
-                  expression: "ruangan"
-                }
-              })
-            ],
-            1
-          ),
+                  model: {
+                    value: _vm.ruangan,
+                    callback: function($$v) {
+                      _vm.ruangan = $$v
+                    },
+                    expression: "ruangan"
+                  }
+                })
+              ],
+              1
+            )
+          ]),
           _vm._v(" "),
           _vm._m(1)
         ]
@@ -65312,9 +65314,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group d-flex justify-content-end" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("\n                    Tambah\n                ")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary cypress-kegiatan-belajar-create-submit"
+        },
+        [_vm._v("\n          Tambah\n        ")]
+      )
     ])
   }
 ]
@@ -65744,7 +65750,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group d-flex justify-content-end" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
+      _c("button", { staticClass: "btn btn-primary cypress-submit-button" }, [
         _vm._v("\n                    Ubah\n                ")
       ])
     ])
@@ -78495,10 +78501,10 @@ var regionDayMap = {
 /*!*********************************************!*\
   !*** ./node_modules/weekstart/package.json ***!
   \*********************************************/
-/*! exports provided: _args, _development, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
+/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_args\":[[\"weekstart@1.0.1\",\"/home/atomicbomber/projects/penjadwalan\"]],\"_development\":true,\"_from\":\"weekstart@1.0.1\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"weekstart@1.0.1\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"1.0.1\",\"saveSpec\":null,\"fetchSpec\":\"1.0.1\"},\"_requiredBy\":[\"#DEV:/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_spec\":\"1.0.1\",\"_where\":\"/home/atomicbomber/projects/penjadwalan\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
+module.exports = JSON.parse("{\"_from\":\"weekstart\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"tag\",\"registry\":true,\"raw\":\"weekstart\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"\",\"saveSpec\":null,\"fetchSpec\":\"latest\"},\"_requiredBy\":[\"#DEV:/\",\"#USER\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_shasum\":\"950970b48e5797e06fc1a762f3d0f013312321e1\",\"_spec\":\"weekstart\",\"_where\":\"/home/vagrant/penjadwalan\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"bundleDependencies\":false,\"deprecated\":false,\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
 
 /***/ }),
 

@@ -8,6 +8,7 @@ use App\KelasMataKuliah;
 use App\MataKuliah;
 use App\PolaPerulangan;
 use App\ProgramStudi;
+use App\Providers\AuthServiceProvider;
 use App\Ruangan;
 use App\Support\LocalDayNames;
 use App\TahunAjaran;
@@ -105,15 +106,17 @@ class KegiatanBelajarController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize(AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR);
+
         $data = $request->validate([
             "tahun_ajaran_id" => "required|exists:tahun_ajaran,id",
             "tipe_semester_id" => "required|exists:tipe_semester,id",
             "program_studi_id" => "required|exists:program_studi,id",
         ]);
 
-        $tahun_ajaran = TahunAjaran::find($data["tahun_ajaran_id"]);
-        $tipe_semester = TipeSemester::find($data["tipe_semester_id"]);
-        $program_studi = ProgramStudi::find($data["program_studi_id"]);
+        $tahun_ajaran = TahunAjaran::query()->find($data["tahun_ajaran_id"]);
+        $tipe_semester = TipeSemester::query()->find($data["tipe_semester_id"]);
+        $program_studi = ProgramStudi::query()->find($data["program_studi_id"]);
 
         $mata_kuliahs = MataKuliah::query()
             ->when($tipe_semester->nama == "GASAL", function (Builder $builder) {
@@ -154,6 +157,8 @@ class KegiatanBelajarController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize(AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR);
+
         $data = $request->validate([
             "tipes.*.name" => ["required"],
             "mata_kuliah_id" => ["required", Rule::exists(MataKuliah::class, "id")],
@@ -208,17 +213,6 @@ class KegiatanBelajarController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Kegiatan $kegiatan
-     * @return Response
-     */
-    public function show(Kegiatan $kegiatan)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param Kegiatan $kegiatan
@@ -227,6 +221,8 @@ class KegiatanBelajarController extends Controller
      */
     public function edit(Kegiatan $kegiatan_belajar, Request $request)
     {
+        $this->authorize(AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR);
+
         $kegiatan_belajar->load([
             "pola_perulangan"
         ]);
@@ -237,9 +233,9 @@ class KegiatanBelajarController extends Controller
             "program_studi_id" => "required|exists:program_studi,id",
         ]);
 
-        $tahun_ajaran = TahunAjaran::find($data["tahun_ajaran_id"]);
-        $tipe_semester = TipeSemester::find($data["tipe_semester_id"]);
-        $program_studi = ProgramStudi::find($data["program_studi_id"]);
+        $tahun_ajaran = TahunAjaran::query()->find($data["tahun_ajaran_id"]);
+        $tipe_semester = TipeSemester::query()->find($data["tipe_semester_id"]);
+        $program_studi = ProgramStudi::query()->find($data["program_studi_id"]);
 
         $kelas_mata_kuliahs = KelasMataKuliah::query()
             ->where([
@@ -273,6 +269,8 @@ class KegiatanBelajarController extends Controller
      */
     public function update(Request $request, Kegiatan $kegiatan_belajar)
     {
+        $this->authorize(AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR);
+
         $data = $request->validate([
             "tipes.*.name" => ["required"],
             "tanggal_mulai" => ["required", "date_format:Y-m-d"],
@@ -339,6 +337,8 @@ class KegiatanBelajarController extends Controller
      */
     public function destroy(Kegiatan $kegiatan_belajar)
     {
+        $this->authorize(AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR);
+
         $messages = [];
 
         try {

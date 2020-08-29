@@ -143,13 +143,14 @@
                                                 "program_studi_id" => $program_studi->id,
                                                 "page" => request("page") ?? 1,
                                          ]) }}"
-                                       class="btn btn-sm btn-info mr-2"
+                                       class="btn btn-sm btn-info mr-2 cypress-edit-button"
                                     >
                                         Ubah
                                         <i class="fas fa-pencil-alt  "></i>
                                     </a>
 
                                     <form method="POST"
+                                          class="cypress-delete-button"
                                           action="{{ route("kegiatan-belajar.destroy", $kegiatan) }}"
                                     >
                                         @method("DELETE")

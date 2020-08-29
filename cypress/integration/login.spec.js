@@ -1,7 +1,6 @@
 context('Login', () => {
     beforeEach(() => {
-        cy.refreshDatabase()
-        cy.seed('AdminUserSeeder')
+        cy.artisan(`db:reset-seed`)
         cy.visit('/login')
     })
 
