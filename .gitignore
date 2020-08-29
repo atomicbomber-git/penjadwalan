@@ -6,7 +6,11 @@
 .env
 .env.backup
 .phpunit.result.cache
+.env.cypress
+/cypress/videos
+/cypress/screenshots
 /.vagrant
+/database/seeds/*
 Homestead.json
 Homestead.yaml
 npm-debug.log

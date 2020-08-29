@@ -69,6 +69,10 @@ return [
             'root' => base_path('database/seeds/data')
         ],
 
+        'snapshots' => [
+            'driver' => 'local',
+            'root' => database_path('snapshots'),
+        ],
     ],
 
     /*

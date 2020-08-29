@@ -28,5 +28,8 @@
         "vue-multiselect": "^2.1.6",
         "vue-template-compiler": "^2.6.10",
         "weekstart": "^1.0.1"
+    },
+    "dependencies": {
+        "cypress": "^5.0.0"
     }
 }
