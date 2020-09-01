@@ -79,19 +79,21 @@
     </div>
 
     <div class="my-3">
-        <div class="d-flex justify-content-end">
-            <a
-                    href="{{ route("kegiatan-belajar.create", [
+        @can(\App\Providers\AuthServiceProvider::MANAGE_KEGIATAN_BELAJAR)
+            <div class="d-flex justify-content-end">
+                <a
+                        href="{{ route("kegiatan-belajar.create", [
                         "tipe_semester_id" => $tipe_semester->id,
                         "tahun_ajaran_id" => $tahun_ajaran->id,
                         "program_studi_id" => $program_studi->id,
                         ]) }}"
-                    class="btn btn-dark btn-sm"
-            >
-                Tambah Kegiatan Belajar
-                <i class="fas fa-plus"></i>
-            </a>
-        </div>
+                        class="btn btn-dark btn-sm"
+                >
+                    Tambah Kegiatan Belajar
+                    <i class="fas fa-plus"></i>
+                </a>
+            </div>
+        @endcan
 
         @include("layouts._messages")
     </div>
