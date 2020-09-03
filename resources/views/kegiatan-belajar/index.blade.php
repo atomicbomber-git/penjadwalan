@@ -25,16 +25,16 @@
         </div>
 
         <div class="card-body">
-            <form>
+            <form class="filter-form">
                 <div class="form-group form-group-sm">
                     <label for="tahun_ajaran_id"> Tahun Ajaran</label>
                     <select class="form-control form-control-sm"
                             name="tahun_ajaran_id"
                             id="tahun_ajaran_id"
                     >
-                        @foreach($tahun_ajarans AS $tahun_ajaran)
-                            <option value="{{ $tahun_ajaran->id }}" {{ $tahun_ajaran->id == old("tahun_ajaran_id", $tahun_ajaran->id) ? "selected" : ""}}>
-                                {{ $tahun_ajaran->tahun_mulai }} - {{ $tahun_ajaran->tahun_selesai }}
+                        @foreach($tahun_ajarans AS $ta)
+                            <option value="{{ $ta->id }}" {{ $ta->id == old("tahun_ajaran_id", $tahun_ajaran->id) ? "selected" : ""}}>
+                                {{ $ta->tahun_mulai }} - {{ $ta->tahun_selesai }}
                             </option>
                         @endforeach
                     </select>
@@ -46,9 +46,9 @@
                             name="tipe_semester_id"
                             id="tipe_semester_id"
                     >
-                        @foreach($tipe_semesters AS $tipe_semester)
-                            <option value="{{ $tipe_semester->id }}" {{ $tipe_semester->id == old("tipe_semester_id", $tipe_semester->id) ? "selected" : ""}}>
-                                {{ $tipe_semester->nama }}
+                        @foreach($tipe_semesters AS $tipe)
+                            <option value="{{ $tipe->id }}" {{ $tipe->id == old("tipe_semester_id", $tipe_semester->id) ? "selected" : ""}}>
+                                {{ $tipe->nama }}
                             </option>
                         @endforeach
                     </select>
