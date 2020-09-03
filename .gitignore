@@ -10,7 +10,7 @@
 /cypress/videos
 /cypress/screenshots
 /.vagrant
-/database/seeds/*
+/database/seeds/
 Homestead.json
 Homestead.yaml
 npm-debug.log
