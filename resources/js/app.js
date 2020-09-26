@@ -8,6 +8,10 @@ import moment from "moment";
 
 require('./bootstrap');
 
+window.$ = require("jquery")
+
+require("select2")
+
 window.Vue = require('vue');
 
 /**

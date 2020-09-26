@@ -11,9 +11,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"
-            defer></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch"
@@ -24,6 +22,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}"
           rel="stylesheet">
+
+    @livewireStyles
 </head>
 <body>
 <div id="app">
@@ -134,5 +134,11 @@
         </div>
     </div>
 </div>
+
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
+
+@livewireScripts
+@stack("scripts")
 </body>
 </html>
