@@ -6,16 +6,17 @@ use App\Casts\JsonCast;
 use App\Jadwal;
 use App\KelasMataKuliah;
 use App\Ruangan;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 
 class PenggunaanRuanganController extends Controller
 {
-    public function __construct()
+    private $responseFactory;
+
+    public function __construct(ResponseFactory $responseFactory)
     {
-        $this->middleware([
-            "auth"
-        ]);
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -26,25 +27,7 @@ class PenggunaanRuanganController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $ruangans = Ruangan::query()
-            ->select("id", "nama")
-            ->get();
-
-        $filter_ruangan_id = $request->get("filter_ruangan_id", $ruangans->first()->id);
-        $ruangan = $ruangans->where("id", $filter_ruangan_id)->first();
-
-        $filter_waktu_mulai = $request->get("filter_waktu_mulai", Date::today()->format("Y-m-d H:i:s"));
-        $filter_waktu_selesai = $request->get("filter_waktu_selesai", Date::today()->addMonths(1)->format("Y-m-d H:i:s"));
-        $jadwals = $this->getJadwal($filter_ruangan_id, $filter_waktu_mulai, $filter_waktu_selesai);
-
-        return view("penggunaan-ruangan", compact(
-            "filter_waktu_mulai",
-            "filter_waktu_selesai",
-            "filter_ruangan_id",
-            "ruangan",
-            "ruangans",
-            "jadwals",
-        ));
+        return view("penggunaan-ruangan");
     }
 
     /**

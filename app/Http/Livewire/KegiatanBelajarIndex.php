@@ -23,6 +23,8 @@ class KegiatanBelajarIndex extends Component
     public $program_studi_id;
     public $tipe_semester_id;
     public $ruangan_id;
+    public $tanggal_mulai;
+    public $tanggal_selesai;
 
     protected $queryString = [
         "tahun_ajaran_id" => ["except" => ""],
@@ -33,9 +35,9 @@ class KegiatanBelajarIndex extends Component
 
     public function mount(Request $request)
     {
-        $this->tahun_ajaran_id = $request->get("tahun_ajaran_id", TahunAjaran::query()->value("id"));
-        $this->program_studi_id = $request->get("program_studi_id", ProgramStudi::query()->value("id"));
-        $this->tipe_semester_id = $request->get("tipe_semester_id", TipeSemester::query()->value("id"));
+        $this->tahun_ajaran_id = $request->get("tahun_ajaran_id", TahunAjaran::query()->orderBy("tahun_mulai")->value("id"));
+        $this->program_studi_id = $request->get("program_studi_id", ProgramStudi::query()->orderBy("nama")->value("id"));
+        $this->tipe_semester_id = $request->get("tipe_semester_id", TipeSemester::query()->orderBy("nama")->value("id"));
         $this->ruangan_id = $request->get("ruangan_id", null);
     }
 

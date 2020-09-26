@@ -8,6 +8,11 @@ use Jenssegers\Date\Date;
 
 class Formatter
 {
+    public static function fancyDate($datetime)
+    {
+        return (new Date($datetime))->format("l, d F Y");
+    }
+
     /**
      * @param $datetime
      * @return string
@@ -15,6 +20,6 @@ class Formatter
      */
     public static function fancyDatetime($datetime)
     {
-        return (new \Jenssegers\Date\Date($datetime))->format("l, d F Y H:i:s");
+        return (new Date($datetime))->format("l, d F Y H:i:s");
     }
 }

@@ -64,9 +64,9 @@
                                     wire:model="program_studi_id"
                                     id="program_studi_id"
                             >
-                                @foreach($program_studis AS $program_studi_loop_item)
-                                    <option value="{{ $program_studi_loop_item->id }}">
-                                        {{ $program_studi_loop_item->nama }}
+                                @foreach($program_studis AS $program_studi_item)
+                                    <option value="{{ $program_studi_item->id }}">
+                                        {{ $program_studi_item->nama }}
                                     </option>
                                 @endforeach
                             </select>
@@ -100,16 +100,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="col">
-
-                    </div>
-
-                    <div class="col">
-
-                    </div>
-                </div>
             </form>
         </div>
     </div>
@@ -136,7 +126,7 @@
 
     <div class="alert alert-info">
         Menampilkan kegiatan belajar untuk Program Studi
-        <strong> {{ $program_studis[$program_studi->id]->nama }} </strong>
+        <strong> {{ $program_studi->nama }} </strong>
         Tahun Ajaran <strong> {{ $tahun_ajaran->tahun_mulai }} - {{ $tahun_ajaran->tahun_selesai }} </strong>
         Semester <strong> {{ $tipe_semester->nama }} </strong>
         @if($ruangan !== null)
