@@ -35,7 +35,7 @@ class PenggunaanRuanganIndex extends Component
     {
         $this->fill([
             "tanggal_mulai" => $request->query("tanggal_mulai", today()->format("Y-m-d")),
-            "tanggal_selesai" => $request->query("tanggal_mulai", today()->format("Y-m-d")),
+            "tanggal_selesai" => $request->query("tanggal_selesai", today()->format("Y-m-d")),
         ]);
     }
 
@@ -59,6 +59,12 @@ class PenggunaanRuanganIndex extends Component
             "ruangans" => $ruangans = Ruangan::query()
                 ->select("id", "nama")
                 ->orderBy("nama")
+                ->get(),
+            "unused_ruangans" => Ruangan::query()
+                ->whereNotIn("id",
+                    $this->getBaseJadwalQuery()
+                        ->pluck("ruangan_id")
+                )
                 ->get(),
             "used_ruangan_count" => $this->getBaseJadwalQuery()
                 ->selectRaw("COUNT(DISTINCT ruangan_id) AS ruangan_count")

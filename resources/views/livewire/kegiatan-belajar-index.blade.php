@@ -26,9 +26,9 @@
                 <div class="form-row">
                     <div class="col">
                         <div class="form-group form-group-sm">
-                            <label for="tahun_ajaran_id"> Tahun Ajaran</label>
+                            <label for="tahun_ajaran_id"> Tahun Ajaran </label>
                             <select class="form-control form-control-sm"
-                                    wire:model="tahun_ajaran_id"
+                                    wire:model.lazy="tahun_ajaran_id"
                                     id="tahun_ajaran_id"
                             >
                                 @foreach($tahun_ajarans AS $ta)
@@ -43,7 +43,7 @@
                         <div class="form-group form-group-sm">
                             <label for="tipe_semester_id"> Tipe Semester</label>
                             <select class="form-control form-control-sm"
-                                    wire:model="tipe_semester_id"
+                                    wire:model.lazy="tipe_semester_id"
                                     id="tipe_semester_id"
                             >
                                 @foreach($tipe_semesters AS $tipe)
@@ -61,7 +61,7 @@
                         <div class="form-group form-group-sm">
                             <label for="program_studi_id"> Program Studi</label>
                             <select class="form-control form-control-sm"
-                                    wire:model="program_studi_id"
+                                    wire:model.lazy="program_studi_id"
                                     id="program_studi_id"
                             >
                                 @foreach($program_studis AS $program_studi_item)
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <label for="ruangan_id"> Ruangan: </label>
                             <select
-                                    wire:model="ruangan_id"
+                                    wire:model.lazy="ruangan_id"
                                     id="ruangan_id"
                                     type="text"
                                     class="form-control form-control-sm @error("ruangan_id") is-invalid @enderror"

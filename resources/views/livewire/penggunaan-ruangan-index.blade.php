@@ -23,8 +23,12 @@
 
             <div class="card-body">
                 <div class="form-group">
-                    <label for="ruangan_id" wire:key="ruangan_id_label"> Ruangan: </label>
-                    <div wire:ignore wire:key="ruangan_id_select">
+                    <label for="ruangan_id"
+                           wire:key="ruangan_id_label"
+                    > Ruangan: </label>
+                    <div wire:ignore
+                         wire:key="ruangan_id_select"
+                    >
                         <select
                                 id="ruangan_id"
                                 type="text"
@@ -40,7 +44,9 @@
                         </select>
                     </div>
                     @error("ruangan_id")
-                        <span class="invalid-feedback" wire:key="ruangan_id_feedback">
+                    <span class="invalid-feedback"
+                          wire:key="ruangan_id_feedback"
+                    >
                             {{ $message }}
                         </span>
                     @enderror
@@ -53,11 +59,9 @@
                                     allowClear: true,
                                     placeholder: "Ruangan",
                                 }).change(event => {
-                                    console.log(event)
                                     Livewire.emit('updateRuanganId', event.target.value)
                                 })
                             }
-
                             jQuery(function () {
                                 setupSelectRuanganId()
                             })
@@ -74,7 +78,7 @@
                                     type="date"
                                     placeholder="Tanggal Mulai"
                                     class="form-control @error("tanggal_mulai") is-invalid @enderror"
-                                    wire:model="tanggal_mulai"
+                                    wire:model.lazy="tanggal_mulai"
                                     value="{{ old("tanggal_mulai") }}"
                             />
                             @error("tanggal_mulai")
@@ -92,7 +96,7 @@
                                     type="date"
                                     placeholder="Tanggal Selesai"
                                     class="form-control @error("tanggal_selesai") is-invalid @enderror"
-                                    wire:model="tanggal_selesai"
+                                    wire:model.lazy="tanggal_selesai"
                                     value="{{ old("tanggal_selesai") }}"
                             />
                             @error("tanggal_selesai")
@@ -121,7 +125,12 @@
     </div>
 
     <div class="alert alert-primary my-3">
-        Total ruangan yang digunakan adalah <strong> {{ $used_ruangan_count }} </strong> dari <strong> {{ $ruangans->count() }} </strong> ruangan yang ada.
+        Total ruangan yang digunakan adalah <strong> {{ $used_ruangan_count }} </strong> dari
+        <strong> {{ $ruangans->count() }} </strong> ruangan yang ada.
+    </div>
+
+    <div class="alert alert-success">
+        Ruangan yang tidak digunakan adalah: <strong> {{ join(", ", $unused_ruangans->pluck("nama")->toArray() ) }} </strong>.
     </div>
 
     @foreach($jadwals AS $jadwal)
@@ -131,8 +140,8 @@
                     <span class="h4 d-block font-weight-bold">
                         @switch(true)
                             @case($jadwal->mata_kuliah)
-                                <span class="text-primary"> ({{ $jadwal->nama_ruangan }})  </span>
-                                {{ $jadwal->mata_kuliah->nama }}
+                            <span class="text-primary"> ({{ $jadwal->nama_ruangan }})  </span>
+                            {{ $jadwal->mata_kuliah->nama }}
                             @break
                             @case($jadwal->seminar)
                             {{ $jadwal->seminar->nama }}
@@ -148,7 +157,7 @@
 
                 @if($jadwal->mata_kuliah)
                     <dl>
-                        <dt> Program Studi / Kelas </dt>
+                        <dt> Program Studi / Kelas</dt>
                         <dd>
                             @foreach($jadwal->kegiatan_kelas ?? [] AS $kegiatan_kelas)
                                 <span class="d-block">
