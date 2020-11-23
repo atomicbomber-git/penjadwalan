@@ -129,9 +129,38 @@
         <strong> {{ $ruangans->count() }} </strong> ruangan yang ada.
     </div>
 
-    <div class="alert alert-success">
-        Ruangan yang tidak digunakan adalah: <strong> {{ join(", ", $unused_ruangans->pluck("nama")->toArray() ) }} </strong>.
+    <div class="alert alert-primary my-3 d-flex justify-content-between align-self-center">
+        <div>
+            Terdapat <strong> {{ $unused_ruangans->count() }} </strong> ruangan yang tidak digunakan. <a> </a>
+        </div>
+
+        <button
+                wire:click="toggleShowUnusedRuangans"
+                class="btn {{ $this->show_unused_ruangans ? "btn-danger" : "btn-light" }} btn-sm">
+            {{ $this->show_unused_ruangans ? "Sembunyikan" : "Tampilkan" }}
+            <i class="fas {{ $this->show_unused_ruangans ? "fa-eye-slash" : "fa-eye" }}  "></i>
+        </button>
+
+
     </div>
+
+    @if($this->show_unused_ruangans)
+        <div class="card">
+            <div class="card-header"> Daftar Ruangan yang tidak Digunakan </div>
+
+            <div class="card-body">
+                <table class="table table-sm">
+                    @foreach ($unused_ruangans->chunk(6) as $unused_ruangan_chunk)
+                        <tr>
+                            @foreach ($unused_ruangan_chunk as $unused_ruangan)
+                                <td> {{ $unused_ruangan->nama }} </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+    @endif
 
     @foreach($jadwals AS $jadwal)
         <div class="card my-3">

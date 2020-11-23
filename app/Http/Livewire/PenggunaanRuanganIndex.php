@@ -20,6 +20,7 @@ class PenggunaanRuanganIndex extends Component
     public $ruangan_id;
     public $tanggal_mulai;
     public $tanggal_selesai;
+    public $show_unused_ruangans;
 
     protected $queryString = [
         "ruangan_id" => ["except" => ""],
@@ -36,7 +37,13 @@ class PenggunaanRuanganIndex extends Component
         $this->fill([
             "tanggal_mulai" => $request->query("tanggal_mulai", today()->format("Y-m-d")),
             "tanggal_selesai" => $request->query("tanggal_selesai", today()->format("Y-m-d")),
+            "show_unused_ruangans" => false,
         ]);
+    }
+
+    public function toggleShowUnusedRuangans()
+    {
+        $this->show_unused_ruangans = !$this->show_unused_ruangans;
     }
 
     public function updating($attributes)
